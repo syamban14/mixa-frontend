@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Geist:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Kinetic Terminal Color System (from StitchMCP) */
+  --color-surface: #0b1326;
+  --color-surface-dim: #0b1326;
+  --color-surface-bright: #31394d;
+  --color-surface-container-lowest: #060e20;
+  --color-surface-container-low: #131b2e;
+  --color-surface-container: #171f33;
+  --color-surface-container-high: #222a3d;
+  --color-surface-container-highest: #2d3449;
+  --color-surface-variant: #2d3449;
+  --color-surface-tint: #4edea3;
+
+  --color-on-surface: #dae2fd;
+  --color-on-surface-variant: #bbcabf;
+  --color-on-background: #dae2fd;
+  --color-background: #0b1326;
+
+  --color-primary: #4edea3;
+  --color-on-primary: #003824;
+  --color-primary-container: #10b981;
+  --color-on-primary-container: #00422b;
+  --color-primary-fixed-dim: #4edea3;
+  --color-inverse-primary: #006c49;
+
+  --color-secondary: #ffb3ad;
+  --color-on-secondary: #68000a;
+  --color-secondary-container: #a40217;
+  --color-on-secondary-container: #ffaea8;
+
+  --color-tertiary: #adc6ff;
+  --color-tertiary-container: #71a1ff;
+  --color-on-tertiary-container: #00367a;
+
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+
+  --color-outline: #86948a;
+  --color-outline-variant: #3c4a42;
+  --color-inverse-surface: #dae2fd;
+  --color-inverse-on-surface: #283044;
+
+  /* Typography */
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'Geist', monospace;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-gutter: 16px;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Panel (Core Stitch Visual) */
+.glass {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-card {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Active Bot Card Glow */
+.bot-active-glow {
+  box-shadow: inset 0 2px 4px rgba(78, 222, 163, 0.1);
+  border-top: 2px solid var(--color-primary);
+}
+
+/* Custom Scrollbar (Matching Stitch) */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0b1326; }
+::-webkit-scrollbar-thumb { background: #2d3449; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #3c4a42; }
+
+/* Zebra striping for tables */
+.zebra-stripe:nth-child(even) {
+  background-color: rgba(30, 41, 59, 0.4);
+}
+.zebra-stripe:hover {
+  background-color: rgba(78, 222, 163, 0.05);
+}
+
+/* Material Symbols base styles */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Micro-interaction hover lift for glass cards */
+.glass-card {
+  transition: transform 0.2s ease-out;
+}
+.glass-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Typography Scale (from Stitch design system) */
+.text-headline-md { font-size: 24px; line-height: 1.3; letter-spacing: -0.01em; font-weight: 600; }
+.text-headline-sm { font-size: 18px; line-height: 1.4; font-weight: 600; }
+.text-body-md { font-size: 16px; line-height: 1.5; font-weight: 400; }
+.text-body-sm { font-size: 14px; line-height: 1.5; font-weight: 400; }
+.text-label-mono { font-size: 12px; line-height: 1; letter-spacing: 0.05em; font-weight: 500; font-family: var(--font-mono); }
+.text-data-numeric { font-size: 14px; line-height: 1; font-weight: 600; font-family: var(--font-mono); }
+.text-display-lg { font-size: 48px; line-height: 1.1; letter-spacing: -0.02em; font-weight: 700; }

@@ -14,7 +14,7 @@
 
   async function fetchStatus() {
     try {
-      const response = await fetch(`http://${window.location.hostname}:8000/api/status`);
+      const response = await fetch('/api/status');
       states = await response.json();
     } catch (e) {
       console.error('Gagal terhubung ke FastAPI backend', e);

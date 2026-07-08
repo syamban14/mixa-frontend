@@ -37,7 +37,7 @@
 
   onMount(async () => {
     try {
-      const res = await fetch(`http://${window.location.hostname}:8000/api/config`);
+      const res = await fetch('/api/config');
       if (res.ok) {
         const data = await res.json();
         initialBalance = data.initial_balance || 0;
@@ -88,7 +88,7 @@
     // Fetch OHLCV data dari FastAPI
     try {
       const symbolPath = coin.symbol.replace('/', '%2F');
-      const response = await fetch(`http://${window.location.hostname}:8000/api/chart/${symbolPath}`);
+      const response = await fetch(`/api/chart/${symbolPath}`);
       const data = await response.json();
 
       if (data && data.length > 0) {

@@ -15,7 +15,7 @@
   onMount(async () => {
     try {
       const symbolPath = coin.symbol.replace('/', '%2F');
-      const response = await fetch(`http://localhost:8000/api/history/${symbolPath}`);
+      const response = await fetch(`http://${window.location.hostname}:8000/api/history/${symbolPath}`);
       history = await response.json();
     } catch (e) {
       console.error('Gagal memuat riwayat:', e);

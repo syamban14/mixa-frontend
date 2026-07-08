@@ -17,7 +17,7 @@
 
   onMount(async () => {
     try {
-      const res = await fetch('http://localhost:8000/api/config');
+      const res = await fetch(`http://${window.location.hostname}:8000/api/config`);
       if (res.ok) {
         const data = await res.json();
         if (data.gemini_model) geminiModel = data.gemini_model;
@@ -32,7 +32,7 @@
     isSaving = true;
     showSuccess = false;
     try {
-      const res = await fetch('http://localhost:8000/api/config', {
+      const res = await fetch(`http://${window.location.hostname}:8000/api/config`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ gemini_model: geminiModel, initial_balance: initialBalance })

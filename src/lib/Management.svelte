@@ -26,6 +26,7 @@
   let formBuyAmount = $state(20000.0);
   let formStrategy = $state('MA Crossover');
   let formIsActive = $state(true);
+  let formEntryPrice = $state(0.0);
 
   function openSettings(coin) {
     selectedCoin = coin;
@@ -34,6 +35,7 @@
     formBuyAmount = coin.buy_amount || 20000.0;
     formStrategy = coin.strategy || 'MA Crossover';
     formIsActive = coin.is_active !== undefined ? coin.is_active : true;
+    formEntryPrice = coin.entry_price || 0.0;
     showModal = true;
   }
 
@@ -49,7 +51,8 @@
           stop_loss_pct: formSl,
           strategy: formStrategy,
           buy_amount: formBuyAmount,
-          is_active: formIsActive
+          is_active: formIsActive,
+          entry_price: formEntryPrice
         })
       });
       if (res.ok) {
@@ -58,6 +61,7 @@
         selectedCoin.strategy = formStrategy;
         selectedCoin.buy_amount = formBuyAmount;
         selectedCoin.is_active = formIsActive;
+        selectedCoin.entry_price = formEntryPrice;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -204,6 +208,18 @@
         >
           <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formIsActive ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
         </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-body-md font-bold text-on-surface-variant mb-2">Buy Amount (Rp)</label>
+          <input type="number" bind:value={formBuyAmount} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary font-mono text-data-numeric">
+        </div>
+        <div>
+          <label class="block text-body-md font-bold text-on-surface-variant mb-2">Harga Beli Manual (Rp)</label>
+          <input type="number" bind:value={formEntryPrice} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary font-mono text-data-numeric">
+          <p class="text-[10px] text-on-surface-variant mt-1">Kosongkan/0 jika ingin otomatis dari bot.</p>
+        </div>
       </div>
 
       <div>

@@ -14,19 +14,25 @@
     'ADA': 'Cardano',
     'DOT': 'Polkadot',
     'MATIC': 'Polygon',
-    'BNB': 'Binance Coin'
+    'BNB': 'Binance Coin',
+    'SHIB': 'Shiba Inu',
+    'PEPE': 'Pepe',
+    'XLM': 'Stellar',
+    'TRX': 'Tron'
   };
 
   let showModal = $state(false);
   let selectedCoin = $state(null);
   let formTp = $state(10.0);
   let formSl = $state(5.0);
+  let formBuyAmount = $state(20000.0);
   let formStrategy = $state('MA Crossover');
 
   function openSettings(coin) {
     selectedCoin = coin;
     formTp = coin.take_profit_pct || 10.0;
     formSl = coin.stop_loss_pct || 5.0;
+    formBuyAmount = coin.buy_amount || 20000.0;
     formStrategy = coin.strategy || 'MA Crossover';
     showModal = true;
   }
@@ -41,13 +47,15 @@
         body: JSON.stringify({
           take_profit_pct: formTp,
           stop_loss_pct: formSl,
-          strategy: formStrategy
+          strategy: formStrategy,
+          buy_amount: formBuyAmount
         })
       });
       if (res.ok) {
         selectedCoin.take_profit_pct = formTp;
         selectedCoin.stop_loss_pct = formSl;
         selectedCoin.strategy = formStrategy;
+        selectedCoin.buy_amount = formBuyAmount;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -174,6 +182,15 @@
           {/each}
         </select>
         <p class="text-sm text-tertiary mt-2">*Sementara ini semua eksekusi Python diarahkan ke MA Crossover</p>
+      </div>
+
+      <div>
+        <label class="block text-body-md font-bold text-on-surface-variant mb-2">Nominal Pembelian (Alokasi Modal)</label>
+        <div class="relative">
+          <span class="absolute left-4 top-4 text-xl text-on-surface-variant font-bold">Rp</span>
+          <input type="number" step="1000" bind:value={formBuyAmount} class="w-full bg-surface-container border border-white/10 rounded-xl pl-14 pr-5 py-4 text-xl text-on-surface font-mono focus:outline-none focus:border-primary">
+        </div>
+        <p class="text-sm text-on-surface-variant mt-2">Atur porsi modal untuk koin ini. Batas minimal Indodax adalah Rp 10.000.</p>
       </div>
 
       <div class="grid grid-cols-2 gap-6">

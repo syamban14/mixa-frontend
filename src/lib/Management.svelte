@@ -27,6 +27,7 @@
   let formSl = $state(5.0);
   let formBuyAmount = $state(20000.0);
   let formStrategy = $state('MA Crossover');
+  let formIsActive = $state(true);
 
   function openSettings(coin) {
     selectedCoin = coin;
@@ -34,6 +35,7 @@
     formSl = coin.stop_loss_pct || 5.0;
     formBuyAmount = coin.buy_amount || 20000.0;
     formStrategy = coin.strategy || 'MA Crossover';
+    formIsActive = coin.is_active !== undefined ? coin.is_active : true;
     showModal = true;
   }
 
@@ -48,7 +50,8 @@
           take_profit_pct: formTp,
           stop_loss_pct: formSl,
           strategy: formStrategy,
-          buy_amount: formBuyAmount
+          buy_amount: formBuyAmount,
+          is_active: formIsActive
         })
       });
       if (res.ok) {
@@ -56,6 +59,7 @@
         selectedCoin.stop_loss_pct = formSl;
         selectedCoin.strategy = formStrategy;
         selectedCoin.buy_amount = formBuyAmount;
+        selectedCoin.is_active = formIsActive;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -145,7 +149,7 @@
     </div>
     <div class="glass-card rounded-xl p-4 border-l-4 border-primary">
       <p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Active Bots</p>
-      <h4 class="text-data-numeric text-headline-md text-primary">{coins.length}</h4>
+      <h4 class="text-data-numeric text-headline-md text-primary">{coins.filter(c => c.is_active).length}</h4>
     </div>
     <div class="glass-card rounded-xl p-4 border-l-4 border-tertiary">
       <p class="text-[10px] uppercase tracking-widest text-on-surface-variant mb-2">Engine</p>
@@ -174,6 +178,29 @@
     </div>
 
     <div class="flex flex-col gap-6">
+      
+      <div class="flex items-center justify-between p-4 rounded-xl bg-surface-container border border-white/5">
+        <div>
+          <h4 class="text-body-lg font-bold text-on-surface flex items-center gap-2">
+            Status Koin
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {formIsActive ? 'bg-primary/20 text-primary' : 'bg-on-surface-variant/20 text-on-surface-variant'}">
+              {formIsActive ? 'Aktif' : 'Nonaktif'}
+            </span>
+          </h4>
+          <p class="text-sm text-on-surface-variant mt-1">
+            Jika dimatikan, bot tidak akan memantau atau membeli koin ini, dan koin akan disembunyikan dari Dasbor.
+          </p>
+        </div>
+        
+        <!-- Svelte Custom Toggle Switch -->
+        <button 
+          class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none {formIsActive ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
+          onclick={() => formIsActive = !formIsActive}
+        >
+          <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formIsActive ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+        </button>
+      </div>
+
       <div>
         <label class="block text-body-md font-bold text-on-surface-variant mb-2">Strategi Aktif</label>
         <select bind:value={formStrategy} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary cursor-pointer">

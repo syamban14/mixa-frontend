@@ -8,8 +8,16 @@
   import Config from './lib/Config.svelte';
 
   let states = $state([]);
+  let activeStates = $derived(states.filter(c => c.is_active));
   let loading = $state(true);
   let activeCoinIndex = $state(0);
+  
+  $effect(() => {
+    if (activeStates.length > 0 && activeCoinIndex >= activeStates.length) {
+      activeCoinIndex = activeStates.length - 1;
+    }
+  });
+
   let activePage = $state('dashboard');
 
   async function fetchStatus() {
@@ -34,7 +42,7 @@
   <Sidebar bind:activePage />
 
   <main class="flex-1 ml-64 min-h-screen flex flex-col">
-    <TopNav coins={states} bind:activeCoinIndex />
+    <TopNav coins={activeStates} bind:activeCoinIndex />
 
     <div class="mt-16 p-6 space-y-4 flex-1">
       {#if loading}
@@ -49,12 +57,18 @@
           <h2 class="text-headline-md text-on-surface">Database Kosong</h2>
           <p class="text-on-surface-variant mt-2">Jalankan <code class="text-primary">python main.py</code> terlebih dahulu.</p>
         </div>
+      {:else if activePage !== 'management' && activeStates.length === 0}
+        <div class="glass rounded-xl p-8 flex flex-col items-center justify-center h-[60vh]">
+          <span class="material-symbols-outlined text-[64px] text-tertiary mb-4">power_off</span>
+          <h2 class="text-headline-md text-on-surface">Tidak Ada Koin Aktif</h2>
+          <p class="text-on-surface-variant mt-2">Masuk ke menu <button class="text-primary font-bold hover:underline" onclick={() => activePage = 'management'}>Bot Management</button> untuk mengaktifkan koin.</p>
+        </div>
       {:else}
-        {#key `${activePage}-${states[activeCoinIndex]?.symbol}`}
+        {#key `${activePage}-${activeStates[activeCoinIndex]?.symbol}`}
           {#if activePage === 'dashboard'}
-            <Dashboard coin={states[activeCoinIndex]} coins={states} />
+            <Dashboard coin={activeStates[activeCoinIndex]} coins={activeStates} />
           {:else if activePage === 'history'}
-            <History coin={states[activeCoinIndex]} />
+            <History coin={activeStates[activeCoinIndex]} />
           {:else if activePage === 'management'}
             <Management coins={states} />
           {:else if activePage === 'config'}
@@ -69,8 +83,8 @@
             <span>API Status: Stable</span>
           </div>
           <div class="text-[10px] text-right">
-            Last sync: {states[activeCoinIndex]?.last_update
-              ? new Date(states[activeCoinIndex].last_update).toLocaleString('id-ID')
+            Last sync: {activeStates[activeCoinIndex]?.last_update
+              ? new Date(activeStates[activeCoinIndex].last_update).toLocaleString('id-ID')
               : '-'} WIB
           </div>
         </div>

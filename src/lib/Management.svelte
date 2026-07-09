@@ -15,9 +15,7 @@
     'DOT': 'Polkadot',
     'MATIC': 'Polygon',
     'BNB': 'Binance Coin',
-    'SHIB': 'Shiba Inu',
-    'PEPE': 'Pepe',
-    'XLM': 'Stellar',
+    'LRC': 'Loopring',
     'TRX': 'Tron'
   };
 
@@ -133,10 +131,17 @@
           <div class="text-label-mono text-on-surface-variant text-[10px]">
             Update: {coin.last_update ? new Date(coin.last_update).toLocaleTimeString('id-ID') : '-'} WIB
           </div>
-          <span class="flex items-center gap-1 text-[10px] text-primary font-bold">
-            <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-            ACTIVE
-          </span>
+          {#if coin.is_active}
+            <span class="flex items-center gap-1 text-[10px] text-primary font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+              ACTIVE
+            </span>
+          {:else}
+            <span class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold opacity-60">
+              <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
+              NOT ACTIVE
+            </span>
+          {/if}
         </div>
       </div>
     {/each}

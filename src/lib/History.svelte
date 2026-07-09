@@ -62,6 +62,7 @@
             <th class="px-4 py-4 text-label-mono text-on-surface-variant uppercase tracking-wider">Pair</th>
             <th class="px-4 py-4 text-label-mono text-on-surface-variant uppercase tracking-wider text-right">Execution Price</th>
             <th class="px-4 py-4 text-label-mono text-on-surface-variant uppercase tracking-wider text-right">Nominal</th>
+            <th class="px-4 py-4 text-label-mono text-on-surface-variant uppercase tracking-wider text-center">PnL</th>
             <th class="px-4 py-4 text-label-mono text-on-surface-variant uppercase tracking-wider text-center">Status</th>
           </tr>
         </thead>
@@ -74,12 +75,13 @@
                 <td class="px-4 py-4"><div class="h-4 w-20 bg-white/5 rounded animate-pulse"></div></td>
                 <td class="px-4 py-4"><div class="h-4 w-20 bg-white/5 rounded animate-pulse ml-auto"></div></td>
                 <td class="px-4 py-4"><div class="h-4 w-16 bg-white/5 rounded animate-pulse ml-auto"></div></td>
+                <td class="px-4 py-4"><div class="h-4 w-16 bg-white/5 rounded animate-pulse mx-auto"></div></td>
                 <td class="px-4 py-4"><div class="h-6 w-20 bg-white/5 rounded-full animate-pulse mx-auto"></div></td>
               </tr>
             {/each}
           {:else if filteredHistory.length === 0}
             <tr>
-              <td colspan="6" class="px-4 py-12 text-center text-on-surface-variant">
+              <td colspan="7" class="px-4 py-12 text-center text-on-surface-variant">
                 Belum ada transaksi untuk {coin.symbol}.
               </td>
             </tr>
@@ -109,6 +111,23 @@
                 </td>
                 <td class="px-4 py-4 text-right">
                   <div class="text-data-numeric">{h.nominal}</div>
+                </td>
+                <td class="px-4 py-4 text-center">
+                  {#if h.action === 'SELL' && h.pnl_pct != null}
+                    {#if h.pnl_pct >= 0}
+                      <span class="inline-flex items-center gap-1 py-1 px-2.5 rounded-full bg-primary/10 text-primary text-[11px] font-bold">
+                        <span class="material-symbols-outlined text-[14px]">trending_up</span>
+                        +{h.pnl_pct.toFixed(2)}%
+                      </span>
+                    {:else}
+                      <span class="inline-flex items-center gap-1 py-1 px-2.5 rounded-full bg-secondary/10 text-secondary text-[11px] font-bold">
+                        <span class="material-symbols-outlined text-[14px]">trending_down</span>
+                        {h.pnl_pct.toFixed(2)}%
+                      </span>
+                    {/if}
+                  {:else}
+                    <span class="text-on-surface-variant text-xs">-</span>
+                  {/if}
                 </td>
                 <td class="px-4 py-4">
                   <div class="flex justify-center">

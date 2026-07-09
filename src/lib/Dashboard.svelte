@@ -35,6 +35,13 @@
       : 0
   );
 
+  // Saldo Koin Spesifik
+  let specificCoinBalance = $derived.by(() => {
+    if (!coin || !coin.balances) return 0;
+    const koin_utama = coin.symbol.split('/')[0];
+    return coin.balances[koin_utama] || 0;
+  });
+
   onMount(async () => {
     try {
       const res = await fetch('/api/config');
@@ -147,6 +154,9 @@
             </span>
           {/if}
           <span class="text-on-surface-variant text-[12px]">Global P&L</span>
+        </div>
+        <div class="mt-2 text-[12px] font-bold text-tertiary border-t border-white/5 pt-2">
+          Saldo {coin.symbol.split('/')[0]}: {specificCoinBalance}
         </div>
       </div>
     </div>

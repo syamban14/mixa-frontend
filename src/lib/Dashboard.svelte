@@ -42,6 +42,12 @@
     return coin.balances[koin_utama] || 0;
   });
 
+  // Saldo IDR
+  let idrBalance = $derived.by(() => {
+    if (!coin || !coin.balances) return 0;
+    return coin.balances['IDR'] || 0;
+  });
+
   onMount(async () => {
     try {
       const res = await fetch('/api/config');
@@ -139,9 +145,33 @@
       <h2 class="text-[32px] font-black text-on-surface font-sans">
         Rp {totalAsset.toLocaleString('id-ID')}
       </h2>
-      <div class="flex flex-col gap-2 mt-2">
-        <div class="text-on-surface-variant text-[12px]">Modal Awal: Rp {initialBalance.toLocaleString('id-ID')}</div>
-        <div class="flex items-center gap-2">
+      
+      <div class="flex flex-col gap-3 mt-4">
+        <div class="grid grid-cols-2 gap-2 text-[12px] bg-black/20 p-3 rounded-lg border border-white/5">
+          <div>
+            <span class="text-on-surface-variant block mb-1">Modal Awal</span>
+            <span class="font-bold">Rp {initialBalance.toLocaleString('id-ID')}</span>
+          </div>
+          <div>
+            <span class="text-on-surface-variant block mb-1">Sisa Saldo IDR</span>
+            <span class="font-bold text-primary">Rp {idrBalance.toLocaleString('id-ID')}</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-[12px] bg-black/20 p-3 rounded-lg border border-white/5">
+          <div>
+            <span class="text-on-surface-variant block mb-1">Harga Beli (Entry)</span>
+            <span class="font-bold text-tertiary">
+              {specificCoinBalance > 0 && coin.entry_price > 0 ? 'Rp ' + coin.entry_price.toLocaleString('id-ID') : '-'}
+            </span>
+          </div>
+          <div>
+            <span class="text-on-surface-variant block mb-1">Saldo Koin ({coin.symbol.split('/')[0]})</span>
+            <span class="font-bold text-tertiary">{specificCoinBalance > 0 ? specificCoinBalance : '-'}</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 mt-2">
           {#if globalPnlPct >= 0}
             <span class="flex items-center text-primary bg-primary/10 px-2 py-0.5 rounded text-[12px] font-bold">
               <span class="material-symbols-outlined text-sm">trending_up</span>
@@ -154,9 +184,6 @@
             </span>
           {/if}
           <span class="text-on-surface-variant text-[12px]">Global P&L</span>
-        </div>
-        <div class="mt-2 text-[12px] font-bold text-tertiary border-t border-white/5 pt-2">
-          Saldo {coin.symbol.split('/')[0]}: {specificCoinBalance}
         </div>
       </div>
     </div>

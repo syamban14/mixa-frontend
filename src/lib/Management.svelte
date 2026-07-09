@@ -152,54 +152,54 @@
 
 {#if showModal}
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-  <div class="glass-card w-full max-w-md rounded-2xl p-6 border border-white/10 shadow-2xl relative">
-    <button onclick={() => showModal = false} class="absolute top-4 right-4 text-on-surface-variant hover:text-white">
-      <span class="material-symbols-outlined">close</span>
+  <div class="glass-card w-full max-w-2xl rounded-3xl p-8 border border-white/10 shadow-2xl relative">
+    <button onclick={() => showModal = false} class="absolute top-6 right-6 text-on-surface-variant hover:text-white">
+      <span class="material-symbols-outlined text-3xl">close</span>
     </button>
     
-    <div class="mb-6">
-      <h3 class="text-headline-md text-primary flex items-center gap-2">
-        <span class="material-symbols-outlined">tune</span>
+    <div class="mb-8">
+      <h3 class="text-[32px] font-bold text-primary flex items-center gap-3">
+        <span class="material-symbols-outlined text-[36px]">tune</span>
         Konfigurasi {selectedCoin?.symbol}
       </h3>
-      <p class="text-body-sm text-on-surface-variant mt-1">Atur manajemen risiko dan strategi spesifik untuk koin ini.</p>
+      <p class="text-body-md text-on-surface-variant mt-2">Atur manajemen risiko dan strategi spesifik untuk koin ini.</p>
     </div>
 
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-6">
       <div>
-        <label class="block text-label-mono text-on-surface-variant mb-1">Strategi Aktif</label>
-        <select bind:value={formStrategy} class="w-full bg-surface-container border border-white/10 rounded-lg px-4 py-2 text-on-surface focus:outline-none focus:border-primary">
+        <label class="block text-body-md font-bold text-on-surface-variant mb-2">Strategi Aktif</label>
+        <select bind:value={formStrategy} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary cursor-pointer">
           {#each availableStrategies as strat}
             <option value={strat}>{strat}</option>
           {/each}
         </select>
-        <p class="text-[10px] text-tertiary mt-1">*Sementara ini semua eksekusi Python diarahkan ke MA Crossover</p>
+        <p class="text-sm text-tertiary mt-2">*Sementara ini semua eksekusi Python diarahkan ke MA Crossover</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 gap-6">
         <div>
-          <label class="block text-label-mono text-on-surface-variant mb-1 text-primary">Take Profit (%)</label>
+          <label class="block text-body-md font-bold text-on-surface-variant mb-2 text-primary">Take Profit (%)</label>
           <div class="relative">
-            <input type="number" step="0.1" bind:value={formTp} class="w-full bg-surface-container border border-white/10 rounded-lg px-4 py-2 text-on-surface font-mono focus:outline-none focus:border-primary">
-            <span class="absolute right-3 top-2 text-on-surface-variant">%</span>
+            <input type="number" step="0.1" bind:value={formTp} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-xl text-on-surface font-mono focus:outline-none focus:border-primary">
+            <span class="absolute right-4 top-4 text-xl text-on-surface-variant">%</span>
           </div>
         </div>
         <div>
-          <label class="block text-label-mono text-on-surface-variant mb-1 text-secondary">Stop Loss (%)</label>
+          <label class="block text-body-md font-bold text-on-surface-variant mb-2 text-secondary">Stop Loss (%)</label>
           <div class="relative">
-            <input type="number" step="0.1" bind:value={formSl} class="w-full bg-surface-container border border-white/10 rounded-lg px-4 py-2 text-on-surface font-mono focus:outline-none focus:border-secondary">
-            <span class="absolute right-3 top-2 text-on-surface-variant">%</span>
+            <input type="number" step="0.1" bind:value={formSl} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-xl text-on-surface font-mono focus:outline-none focus:border-secondary">
+            <span class="absolute right-4 top-4 text-xl text-on-surface-variant">%</span>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="mt-8 flex justify-end gap-3">
-      <button onclick={() => showModal = false} class="px-5 py-2.5 rounded-full text-on-surface hover:bg-white/5 transition-colors font-semibold">
+    <div class="mt-10 flex justify-end gap-4">
+      <button onclick={() => showModal = false} class="px-8 py-4 rounded-full text-lg text-on-surface hover:bg-white/5 transition-colors font-semibold">
         Batal
       </button>
-      <button onclick={saveSettings} class="px-5 py-2.5 rounded-full bg-primary text-black hover:bg-primary-hover font-bold transition-all shadow-[0_0_15px_rgba(78,222,163,0.3)]">
-        Simpan
+      <button onclick={saveSettings} class="px-8 py-4 rounded-full bg-primary text-black text-lg hover:bg-primary-hover font-bold transition-all shadow-[0_0_20px_rgba(78,222,163,0.4)]">
+        Simpan Pengaturan
       </button>
     </div>
   </div>

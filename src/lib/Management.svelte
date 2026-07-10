@@ -2,7 +2,7 @@
   let { coins = [] } = $props();
 
   const botIcons = ['trending_up', 'grid_view', 'bolt', 'account_balance_wallet'];
-  const availableStrategies = ['MA Crossover', 'Grid Trading', 'RSI Breakout', 'Scalping'];
+  const availableStrategies = ['MA Crossover', 'Grid Trading', 'RSI Breakout', 'Scalping', 'Bollinger Bands'];
   
   const coinDict = {
     'BTC': 'Bitcoin',
@@ -261,7 +261,7 @@
             <option value={strat}>{strat}</option>
           {/each}
         </select>
-        <p class="text-sm text-tertiary mt-2">*Sementara ini semua eksekusi Python diarahkan ke MA Crossover</p>
+        <p class="text-sm text-tertiary mt-2">*Berbagai strategi sekarang didukung sepenuhnya oleh mesin bot.</p>
       </div>
 
       <div>

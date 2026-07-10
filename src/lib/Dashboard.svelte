@@ -35,6 +35,10 @@
       : 0
   );
 
+  let globalPnlIdr = $derived(
+    totalAsset - initialBalance
+  );
+
   // Saldo Koin Spesifik
   let specificCoinBalance = $derived.by(() => {
     if (!coin || !coin.balances) return 0;
@@ -47,6 +51,12 @@
     if (!coin || !coin.balances) return 0;
     return coin.balances['IDR'] || 0;
   });
+
+  let coinPnlIdr = $derived(
+    coin?.entry_price > 0 && specificCoinBalance > 0
+      ? (specificCoinBalance * coin.entry_price) * (pnlPct / 100)
+      : 0
+  );
 
   onMount(async () => {
     try {
@@ -171,44 +181,59 @@
           </div>
         </div>
 
-        <div class="flex items-center gap-4 mt-2">
+        <div class="flex flex-col gap-4 mt-2">
           <!-- Global PnL -->
-          <div class="flex items-center gap-2">
-            {#if globalPnlPct >= 0}
-              <span class="flex items-center text-primary bg-primary/10 px-2 py-0.5 rounded text-[12px] font-bold">
-                <span class="material-symbols-outlined text-[14px]">public</span>
-                +{globalPnlPct.toFixed(2)}%
-              </span>
-            {:else}
-              <span class="flex items-center text-secondary bg-secondary/10 px-2 py-0.5 rounded text-[12px] font-bold">
-                <span class="material-symbols-outlined text-[14px]">public</span>
-                {globalPnlPct.toFixed(2)}%
-              </span>
-            {/if}
+          <div class="flex items-center justify-between border-b border-white/5 pb-2">
             <span class="text-on-surface-variant text-[12px]">Global P&L</span>
+            <div class="flex items-center gap-2">
+              {#if globalPnlPct >= 0}
+                <span class="text-[12px] font-bold text-primary">
+                  +Rp {globalPnlIdr.toLocaleString('id-ID')}
+                </span>
+                <span class="flex items-center text-primary bg-primary/10 px-2 py-0.5 rounded text-[12px] font-bold">
+                  <span class="material-symbols-outlined text-[14px]">public</span>
+                  +{globalPnlPct.toFixed(2)}%
+                </span>
+              {:else}
+                <span class="text-[12px] font-bold text-secondary">
+                  Rp {globalPnlIdr.toLocaleString('id-ID')}
+                </span>
+                <span class="flex items-center text-secondary bg-secondary/10 px-2 py-0.5 rounded text-[12px] font-bold">
+                  <span class="material-symbols-outlined text-[14px]">public</span>
+                  {globalPnlPct.toFixed(2)}%
+                </span>
+              {/if}
+            </div>
           </div>
 
           <!-- Specific Coin PnL -->
-          <div class="flex items-center gap-2">
-            {#if coin.entry_price > 0}
-              {#if pnlPct >= 0}
-                <span class="flex items-center text-primary bg-primary/10 px-2 py-0.5 rounded text-[12px] font-bold">
-                  <span class="material-symbols-outlined text-[14px]">trending_up</span>
-                  +{pnlPct.toFixed(2)}%
-                </span>
+          <div class="flex items-center justify-between">
+            <span class="text-on-surface-variant text-[12px]">{coin.symbol.split('/')[0]} P&L</span>
+            <div class="flex items-center gap-2">
+              {#if coin.entry_price > 0}
+                {#if pnlPct >= 0}
+                  <span class="text-[12px] font-bold text-primary">
+                    +Rp {coinPnlIdr.toLocaleString('id-ID')}
+                  </span>
+                  <span class="flex items-center text-primary bg-primary/10 px-2 py-0.5 rounded text-[12px] font-bold">
+                    <span class="material-symbols-outlined text-[14px]">trending_up</span>
+                    +{pnlPct.toFixed(2)}%
+                  </span>
+                {:else}
+                  <span class="text-[12px] font-bold text-secondary">
+                    Rp {coinPnlIdr.toLocaleString('id-ID')}
+                  </span>
+                  <span class="flex items-center text-secondary bg-secondary/10 px-2 py-0.5 rounded text-[12px] font-bold">
+                    <span class="material-symbols-outlined text-[14px]">trending_down</span>
+                    {pnlPct.toFixed(2)}%
+                  </span>
+                {/if}
               {:else}
-                <span class="flex items-center text-secondary bg-secondary/10 px-2 py-0.5 rounded text-[12px] font-bold">
-                  <span class="material-symbols-outlined text-[14px]">trending_down</span>
-                  {pnlPct.toFixed(2)}%
+                <span class="flex items-center text-on-surface-variant bg-on-surface-variant/10 px-2 py-0.5 rounded text-[12px] font-bold">
+                  -
                 </span>
               {/if}
-              <span class="text-on-surface-variant text-[12px]">{coin.symbol.split('/')[0]} P&L</span>
-            {:else}
-              <span class="flex items-center text-on-surface-variant bg-on-surface-variant/10 px-2 py-0.5 rounded text-[12px] font-bold">
-                -
-              </span>
-              <span class="text-on-surface-variant text-[12px]">{coin.symbol.split('/')[0]} P&L</span>
-            {/if}
+            </div>
           </div>
         </div>
       </div>

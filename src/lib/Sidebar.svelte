@@ -35,6 +35,10 @@
 
   <div class="mt-auto space-y-4">
     <div class="pt-4 border-t border-white/5 space-y-1">
+      <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors active:scale-95 duration-150 text-left {activePage === 'logs' ? 'text-primary font-bold bg-primary/5' : 'text-on-surface-variant font-medium hover:bg-surface-container-high'}" onclick={() => activePage = 'logs'}>
+        <span class="material-symbols-outlined" style={activePage === 'logs' ? "font-variation-settings: 'FILL' 1;" : ''}>terminal</span>
+        <span class="text-body-sm">System Logs</span>
+      </button>
       <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high transition-colors" href="#live">
         <span class="material-symbols-outlined">sensors</span>
         <span class="text-body-sm">Live Status</span>

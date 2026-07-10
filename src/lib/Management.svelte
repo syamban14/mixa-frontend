@@ -29,6 +29,8 @@
   let formEntryPrice = $state(0.0);
   let formUseTrailingStop = $state(false);
   let formTrailingStopPct = $state(2.0);
+  let formUseDynamicRoi = $state(false);
+  let formDynamicRoiConfig = $state('{"0": 5.0, "60": 2.0, "1440": 0.5}');
 
   function openSettings(coin) {
     selectedCoin = coin;
@@ -40,6 +42,8 @@
     formEntryPrice = coin.entry_price || 0.0;
     formUseTrailingStop = coin.use_trailing_stop || false;
     formTrailingStopPct = coin.trailing_stop_pct || 2.0;
+    formUseDynamicRoi = coin.use_dynamic_roi || false;
+    formDynamicRoiConfig = coin.dynamic_roi_config || '{"0": 5.0, "60": 2.0, "1440": 0.5}';
     showModal = true;
   }
 
@@ -58,7 +62,9 @@
           is_active: formIsActive,
           entry_price: formEntryPrice,
           use_trailing_stop: formUseTrailingStop,
-          trailing_stop_pct: formTrailingStopPct
+          trailing_stop_pct: formTrailingStopPct,
+          use_dynamic_roi: formUseDynamicRoi,
+          dynamic_roi_config: formDynamicRoiConfig
         })
       });
       if (res.ok) {
@@ -70,6 +76,8 @@
         selectedCoin.entry_price = formEntryPrice;
         selectedCoin.use_trailing_stop = formUseTrailingStop;
         selectedCoin.trailing_stop_pct = formTrailingStopPct;
+        selectedCoin.use_dynamic_roi = formUseDynamicRoi;
+        selectedCoin.dynamic_roi_config = formDynamicRoiConfig;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -299,6 +307,42 @@
               <span class="absolute right-4 top-4 text-xl text-primary">%</span>
             </div>
             <p class="text-xs text-primary/70 mt-2">Bot akan menjual jika harga turun sebanyak {formTrailingStopPct}% dari harga puncak tertingginya.</p>
+          </div>
+        {/if}
+      </div>
+
+      <div class="p-6 rounded-xl bg-surface-container border border-tertiary/20 relative overflow-hidden">
+        <div class="absolute -right-6 -top-6 w-32 h-32 bg-tertiary/5 rounded-full blur-2xl"></div>
+        
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h4 class="text-body-lg font-bold text-tertiary flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px]">hourglass_bottom</span>
+              Dynamic ROI (Timer Target)
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {formUseDynamicRoi ? 'bg-tertiary/20 text-tertiary' : 'bg-on-surface-variant/20 text-on-surface-variant'}">
+                {formUseDynamicRoi ? 'Aktif' : 'Nonaktif'}
+              </span>
+            </h4>
+            <p class="text-sm text-on-surface-variant mt-1">
+              Otomatis menurunkan target Take Profit seiring berjalannya waktu (dalam menit) untuk menghindari modal mati.
+            </p>
+          </div>
+          
+          <button 
+            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseDynamicRoi ? 'bg-tertiary' : 'bg-surface-container-high border border-white/20'}"
+            onclick={() => formUseDynamicRoi = !formUseDynamicRoi}
+          >
+            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseDynamicRoi ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+          </button>
+        </div>
+
+        {#if formUseDynamicRoi}
+          <div class="mt-4 animate-in slide-in-from-top-2 fade-in duration-300">
+            <label class="block text-body-md font-bold text-on-surface-variant mb-2">Konfigurasi Aturan Waktu (Format JSON)</label>
+            <div class="relative">
+              <textarea rows="3" bind:value={formDynamicRoiConfig} class="w-full bg-black/20 border border-tertiary/30 rounded-xl px-5 py-4 text-sm text-tertiary font-mono focus:outline-none focus:border-tertiary"></textarea>
+            </div>
+            <p class="text-xs text-tertiary/70 mt-2">Format: {"{"} "Menit": Persentase_Target {"}"}. Contoh: {"{"}"0": 5.0, "60": 2.0, "1440": 0.5{"}"} artinya: Awalnya 5%, setelah 60 menit turun jadi 2%, setelah 1 hari (1440 mnt) turun jadi 0.5% (Balik modal).</p>
           </div>
         {/if}
       </div>

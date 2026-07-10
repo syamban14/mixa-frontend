@@ -27,6 +27,8 @@
   let formStrategy = $state('MA Crossover');
   let formIsActive = $state(true);
   let formEntryPrice = $state(0.0);
+  let formUseTrailingStop = $state(false);
+  let formTrailingStopPct = $state(2.0);
 
   function openSettings(coin) {
     selectedCoin = coin;
@@ -36,6 +38,8 @@
     formStrategy = coin.strategy || 'MA Crossover';
     formIsActive = coin.is_active !== undefined ? coin.is_active : true;
     formEntryPrice = coin.entry_price || 0.0;
+    formUseTrailingStop = coin.use_trailing_stop || false;
+    formTrailingStopPct = coin.trailing_stop_pct || 2.0;
     showModal = true;
   }
 
@@ -52,7 +56,9 @@
           strategy: formStrategy,
           buy_amount: formBuyAmount,
           is_active: formIsActive,
-          entry_price: formEntryPrice
+          entry_price: formEntryPrice,
+          use_trailing_stop: formUseTrailingStop,
+          trailing_stop_pct: formTrailingStopPct
         })
       });
       if (res.ok) {
@@ -62,6 +68,8 @@
         selectedCoin.buy_amount = formBuyAmount;
         selectedCoin.is_active = formIsActive;
         selectedCoin.entry_price = formEntryPrice;
+        selectedCoin.use_trailing_stop = formUseTrailingStop;
+        selectedCoin.trailing_stop_pct = formTrailingStopPct;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -256,6 +264,43 @@
             <span class="absolute right-4 top-4 text-xl text-on-surface-variant">%</span>
           </div>
         </div>
+      </div>
+
+      <div class="p-6 rounded-xl bg-surface-container border border-primary/20 relative overflow-hidden">
+        <div class="absolute -right-6 -top-6 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
+        
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h4 class="text-body-lg font-bold text-primary flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px]">trending_down</span>
+              Trailing Stop Loss
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {formUseTrailingStop ? 'bg-primary/20 text-primary' : 'bg-on-surface-variant/20 text-on-surface-variant'}">
+                {formUseTrailingStop ? 'Aktif' : 'Nonaktif'}
+              </span>
+            </h4>
+            <p class="text-sm text-on-surface-variant mt-1">
+              Otomatis mengunci profit jika harga turun dari puncak tertingginya. Mengabaikan Take Profit statis.
+            </p>
+          </div>
+          
+          <button 
+            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseTrailingStop ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
+            onclick={() => formUseTrailingStop = !formUseTrailingStop}
+          >
+            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseTrailingStop ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+          </button>
+        </div>
+
+        {#if formUseTrailingStop}
+          <div class="mt-4 animate-in slide-in-from-top-2 fade-in duration-300">
+            <label class="block text-body-md font-bold text-on-surface-variant mb-2">Batas Toleransi Penurunan (%)</label>
+            <div class="relative">
+              <input type="number" step="0.1" bind:value={formTrailingStopPct} class="w-full bg-black/20 border border-primary/30 rounded-xl px-5 py-4 text-xl text-primary font-mono focus:outline-none focus:border-primary">
+              <span class="absolute right-4 top-4 text-xl text-primary">%</span>
+            </div>
+            <p class="text-xs text-primary/70 mt-2">Bot akan menjual jika harga turun sebanyak {formTrailingStopPct}% dari harga puncak tertingginya.</p>
+          </div>
+        {/if}
       </div>
     </div>
 

@@ -31,6 +31,10 @@
   let formTrailingStopPct = $state(2.0);
   let formUseDynamicRoi = $state(false);
   let formDynamicRoiConfig = $state('{"0": 5.0, "60": 2.0, "1440": 0.5}');
+  let formUseDca = $state(false);
+  let formDcaMaxOrders = $state(3);
+  let formDcaStepPct = $state(3.0);
+  let formDcaVolumeScale = $state(1.0);
 
   function openSettings(coin) {
     selectedCoin = coin;
@@ -44,6 +48,10 @@
     formTrailingStopPct = coin.trailing_stop_pct || 2.0;
     formUseDynamicRoi = coin.use_dynamic_roi || false;
     formDynamicRoiConfig = coin.dynamic_roi_config || '{"0": 5.0, "60": 2.0, "1440": 0.5}';
+    formUseDca = coin.use_dca || false;
+    formDcaMaxOrders = coin.dca_max_orders || 3;
+    formDcaStepPct = coin.dca_step_pct || 3.0;
+    formDcaVolumeScale = coin.dca_volume_scale || 1.0;
     showModal = true;
   }
 
@@ -64,7 +72,11 @@
           use_trailing_stop: formUseTrailingStop,
           trailing_stop_pct: formTrailingStopPct,
           use_dynamic_roi: formUseDynamicRoi,
-          dynamic_roi_config: formDynamicRoiConfig
+          dynamic_roi_config: formDynamicRoiConfig,
+          use_dca: formUseDca,
+          dca_max_orders: formDcaMaxOrders,
+          dca_step_pct: formDcaStepPct,
+          dca_volume_scale: formDcaVolumeScale
         })
       });
       if (res.ok) {
@@ -78,6 +90,10 @@
         selectedCoin.trailing_stop_pct = formTrailingStopPct;
         selectedCoin.use_dynamic_roi = formUseDynamicRoi;
         selectedCoin.dynamic_roi_config = formDynamicRoiConfig;
+        selectedCoin.use_dca = formUseDca;
+        selectedCoin.dca_max_orders = formDcaMaxOrders;
+        selectedCoin.dca_step_pct = formDcaStepPct;
+        selectedCoin.dca_volume_scale = formDcaVolumeScale;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -152,10 +168,10 @@
             Update: {coin.last_update ? new Date(coin.last_update).toLocaleTimeString('id-ID') : '-'} WIB
           </div>
           {#if coin.is_active}
-            <span class="flex items-center gap-1 text-[10px] text-primary font-bold">
-              <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-              ACTIVE
-            </span>
+            {#if coin.use_dca && (coin.dca_completed_orders || 0) > 0}
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#f59e0b]/20 text-[#f59e0b] border border-[#f59e0b]/30">DCA: {coin.dca_completed_orders}/{coin.dca_max_orders || 3}</span>
+            {/if}
+            <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-primary/20 text-primary border border-primary/30">AKTIF</span>
           {:else}
             <span class="flex items-center gap-1 text-[10px] text-on-surface-variant font-bold opacity-60">
               <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
@@ -189,7 +205,7 @@
 
 {#if showModal}
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-  <div class="glass-card w-full max-w-2xl rounded-3xl p-8 border border-white/10 shadow-2xl relative">
+  <div class="glass-card w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl p-8 border border-white/10 shadow-2xl relative">
     <button onclick={() => showModal = false} class="absolute top-6 right-6 text-on-surface-variant hover:text-white">
       <span class="material-symbols-outlined text-3xl">close</span>
     </button>
@@ -343,6 +359,63 @@
               <textarea rows="3" bind:value={formDynamicRoiConfig} class="w-full bg-black/20 border border-tertiary/30 rounded-xl px-5 py-4 text-sm text-tertiary font-mono focus:outline-none focus:border-tertiary"></textarea>
             </div>
             <p class="text-xs text-tertiary/70 mt-2">Format: {"{"} "Menit": Persentase_Target {"}"}. Contoh: {"{"}"0": 5.0, "60": 2.0, "1440": 0.5{"}"} artinya: Awalnya 5%, setelah 60 menit turun jadi 2%, setelah 1 hari (1440 mnt) turun jadi 0.5% (Balik modal).</p>
+          </div>
+        {/if}
+      </div>
+
+      <!-- DCA SECTION -->
+      <div class="p-6 rounded-xl bg-surface-container border border-secondary/20 relative overflow-hidden">
+        <div class="absolute -right-6 -top-6 w-32 h-32 bg-secondary/5 rounded-full blur-2xl"></div>
+        
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h4 class="text-body-lg font-bold text-secondary flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px]">shopping_cart_checkout</span>
+              DCA (Safety Orders)
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {formUseDca ? 'bg-secondary/20 text-secondary' : 'bg-on-surface-variant/20 text-on-surface-variant'}">
+                {formUseDca ? 'Aktif' : 'Nonaktif'}
+              </span>
+            </h4>
+            <p class="text-sm text-on-surface-variant mt-1">
+              Serok bawah otomatis saat harga turun untuk mendapatkan Average Entry Price yang lebih murah.
+            </p>
+          </div>
+          
+          <button 
+            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseDca ? 'bg-secondary' : 'bg-surface-container-high border border-white/20'}"
+            onclick={() => formUseDca = !formUseDca}
+          >
+            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseDca ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+          </button>
+        </div>
+
+        {#if formUseDca}
+          <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 animate-in slide-in-from-top-2 fade-in duration-300">
+            <div>
+              <label class="block text-body-md font-bold text-on-surface-variant mb-2">Maks. Safety Orders</label>
+              <div class="relative">
+                <input type="number" bind:value={formDcaMaxOrders} min="1" max="10" step="1" class="w-full bg-black/20 border border-secondary/30 rounded-xl px-5 py-4 text-body-lg text-white font-bold focus:outline-none focus:border-secondary">
+              </div>
+              <p class="text-xs text-on-surface-variant/70 mt-1">Batas maksimal serok.</p>
+            </div>
+            
+            <div>
+              <label class="block text-body-md font-bold text-on-surface-variant mb-2">Jarak Penurunan (%)</label>
+              <div class="relative">
+                <input type="number" bind:value={formDcaStepPct} min="0.1" step="0.1" class="w-full bg-black/20 border border-secondary/30 rounded-xl px-5 py-4 text-body-lg text-secondary font-bold focus:outline-none focus:border-secondary">
+                <span class="absolute right-5 top-1/2 -translate-y-1/2 text-secondary font-bold">%</span>
+              </div>
+              <p class="text-xs text-on-surface-variant/70 mt-1">Turun dari Average Price.</p>
+            </div>
+            
+            <div>
+              <label class="block text-body-md font-bold text-on-surface-variant mb-2">Skala Volume (Martingale)</label>
+              <div class="relative">
+                <input type="number" bind:value={formDcaVolumeScale} min="0.1" step="0.1" class="w-full bg-black/20 border border-secondary/30 rounded-xl px-5 py-4 text-body-lg text-secondary font-bold focus:outline-none focus:border-secondary">
+                <span class="absolute right-5 top-1/2 -translate-y-1/2 text-secondary font-bold">x</span>
+              </div>
+              <p class="text-xs text-on-surface-variant/70 mt-1">Pengganda nominal beli (1.0 = sama).</p>
+            </div>
           </div>
         {/if}
       </div>

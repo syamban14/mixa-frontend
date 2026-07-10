@@ -16,7 +16,8 @@
     'MATIC': 'Polygon',
     'BNB': 'Binance Coin',
     'LRC': 'Loopring',
-    'TRX': 'Tron'
+    'TRX': 'Tron',
+    'PEPE': 'Pepe'
   };
 
   let showModal = $state(false);

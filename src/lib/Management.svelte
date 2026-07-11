@@ -252,10 +252,10 @@
         
         <!-- Svelte Custom Toggle Switch -->
         <button 
-          class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none {formIsActive ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
+          class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none {formIsActive ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
           onclick={() => formIsActive = !formIsActive}
         >
-          <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formIsActive ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+          <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formIsActive ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
         </button>
       </div>
 
@@ -343,10 +343,10 @@
           </div>
           
           <button 
-            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseTrailingStop ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
+            class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseTrailingStop ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
             onclick={() => formUseTrailingStop = !formUseTrailingStop}
           >
-            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseTrailingStop ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+            <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formUseTrailingStop ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
           </button>
         </div>
 
@@ -380,10 +380,10 @@
           </div>
           
           <button 
-            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseDynamicRoi ? 'bg-tertiary' : 'bg-surface-container-high border border-white/20'}"
+            class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseDynamicRoi ? 'bg-tertiary' : 'bg-surface-container-high border border-white/20'}"
             onclick={() => formUseDynamicRoi = !formUseDynamicRoi}
           >
-            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseDynamicRoi ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+            <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formUseDynamicRoi ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
           </button>
         </div>
 
@@ -417,10 +417,10 @@
           </div>
           
           <button 
-            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseDca ? 'bg-secondary' : 'bg-surface-container-high border border-white/20'}"
+            class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseDca ? 'bg-secondary' : 'bg-surface-container-high border border-white/20'}"
             onclick={() => formUseDca = !formUseDca}
           >
-            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseDca ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+            <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formUseDca ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
           </button>
         </div>
 
@@ -473,10 +473,10 @@
           </div>
           
           <button 
-            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseTrailingBuy ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
+            class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseTrailingBuy ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
             onclick={() => formUseTrailingBuy = !formUseTrailingBuy}
           >
-            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseTrailingBuy ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+            <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formUseTrailingBuy ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
           </button>
         </div>
 
@@ -510,10 +510,10 @@
           </div>
           
           <button 
-            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseWhaleRadar ? 'bg-error' : 'bg-surface-container-high border border-white/20'}"
+            class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseWhaleRadar ? 'bg-error' : 'bg-surface-container-high border border-white/20'}"
             onclick={() => formUseWhaleRadar = !formUseWhaleRadar}
           >
-            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseWhaleRadar ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+            <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formUseWhaleRadar ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
           </button>
         </div>
       </div>

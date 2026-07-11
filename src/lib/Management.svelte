@@ -37,6 +37,8 @@
   let formDcaStepPct = $state(3.0);
   let formDcaVolumeScale = $state(1.0);
   let formUseMacroTrend = $state(false);
+  let formUseTrailingBuy = $state(false);
+  let formTrailingBuyPct = $state(1.0);
 
   function openSettings(coin) {
     selectedCoin = coin;
@@ -55,6 +57,8 @@
     formDcaStepPct = coin.dca_step_pct || 3.0;
     formDcaVolumeScale = coin.dca_volume_scale || 1.0;
     formUseMacroTrend = coin.use_macro_trend || false;
+    formUseTrailingBuy = coin.use_trailing_buy || false;
+    formTrailingBuyPct = coin.trailing_buy_pct || 1.0;
     showModal = true;
   }
 
@@ -80,7 +84,9 @@
           dca_max_orders: formDcaMaxOrders,
           dca_step_pct: formDcaStepPct,
           dca_volume_scale: formDcaVolumeScale,
-          use_macro_trend: formUseMacroTrend
+          use_macro_trend: formUseMacroTrend,
+          use_trailing_buy: formUseTrailingBuy,
+          trailing_buy_pct: formTrailingBuyPct
         })
       });
       if (res.ok) {
@@ -99,6 +105,8 @@
         selectedCoin.dca_step_pct = formDcaStepPct;
         selectedCoin.dca_volume_scale = formDcaVolumeScale;
         selectedCoin.use_macro_trend = formUseMacroTrend;
+        selectedCoin.use_trailing_buy = formUseTrailingBuy;
+        selectedCoin.trailing_buy_pct = formTrailingBuyPct;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -439,6 +447,43 @@
               </div>
               <p class="text-xs text-on-surface-variant/70 mt-1">Pengganda nominal beli (1.0 = sama).</p>
             </div>
+          </div>
+        {/if}
+      </div>
+
+      <div class="p-6 rounded-xl bg-surface-container border border-primary/20 relative overflow-hidden">
+        <div class="absolute -left-6 -top-6 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
+        
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h4 class="text-body-lg font-bold text-primary flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px]">moving</span>
+              Trailing Buy (Serok Bergerak)
+              <span class="px-2 py-0.5 rounded text-[9px] bg-primary/20 text-primary uppercase font-bold tracking-wider">
+                Fase 2
+              </span>
+            </h4>
+            <p class="text-sm text-on-surface-variant mt-1">
+              Saat sinyal Beli aktif, bot tidak akan langsung membeli. Bot akan membuntuti harga turun, dan baru membeli saat harga memantul naik.
+            </p>
+          </div>
+          
+          <button 
+            class="relative w-14 h-8 rounded-full transition-colors duration-300 focus:outline-none z-10 {formUseTrailingBuy ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
+            onclick={() => formUseTrailingBuy = !formUseTrailingBuy}
+          >
+            <span class="absolute top-1 left-1 w-6 h-6 rounded-full transition-transform duration-300 shadow-sm {formUseTrailingBuy ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+          </button>
+        </div>
+
+        {#if formUseTrailingBuy}
+          <div class="mt-4 animate-in slide-in-from-top-2 fade-in duration-300">
+            <label class="block text-body-md font-bold text-on-surface-variant mb-2">Toleransi Pantulan (%)</label>
+            <div class="relative">
+              <input type="number" step="0.1" bind:value={formTrailingBuyPct} class="w-full bg-black/20 border border-primary/30 rounded-xl px-5 py-4 text-xl text-primary font-mono focus:outline-none focus:border-primary">
+              <span class="absolute right-5 top-1/2 -translate-y-1/2 text-primary font-bold">%</span>
+            </div>
+            <p class="text-xs text-on-surface-variant/70 mt-2">Bot akan mengeksekusi pembelian jika harga naik sebesar persentase ini dari titik terendah (dasar).</p>
           </div>
         {/if}
       </div>

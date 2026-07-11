@@ -36,6 +36,7 @@
   let formDcaMaxOrders = $state(3);
   let formDcaStepPct = $state(3.0);
   let formDcaVolumeScale = $state(1.0);
+  let formUseMacroTrend = $state(false);
 
   function openSettings(coin) {
     selectedCoin = coin;
@@ -53,6 +54,7 @@
     formDcaMaxOrders = coin.dca_max_orders || 3;
     formDcaStepPct = coin.dca_step_pct || 3.0;
     formDcaVolumeScale = coin.dca_volume_scale || 1.0;
+    formUseMacroTrend = coin.use_macro_trend || false;
     showModal = true;
   }
 
@@ -77,7 +79,8 @@
           use_dca: formUseDca,
           dca_max_orders: formDcaMaxOrders,
           dca_step_pct: formDcaStepPct,
-          dca_volume_scale: formDcaVolumeScale
+          dca_volume_scale: formDcaVolumeScale,
+          use_macro_trend: formUseMacroTrend
         })
       });
       if (res.ok) {
@@ -95,6 +98,7 @@
         selectedCoin.dca_max_orders = formDcaMaxOrders;
         selectedCoin.dca_step_pct = formDcaStepPct;
         selectedCoin.dca_volume_scale = formDcaVolumeScale;
+        selectedCoin.use_macro_trend = formUseMacroTrend;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -263,6 +267,24 @@
           {/each}
         </select>
         <p class="text-sm text-tertiary mt-2">*Berbagai strategi sekarang didukung sepenuhnya oleh mesin bot.</p>
+      </div>
+
+      <div class="flex items-center justify-between p-4 rounded-xl bg-primary/5 border border-primary/20">
+        <div>
+          <h4 class="text-body-md font-bold text-primary flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">query_stats</span>
+            Filter Tren Makro (4H)
+          </h4>
+          <p class="text-xs text-on-surface-variant mt-1">
+            Bot akan memblokir sinyal beli palsu saat pasar sedang Downtrend (Harga di bawah SMA50 - 4 Jam).
+          </p>
+        </div>
+        <button 
+          class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none shrink-0 {formUseMacroTrend ? 'bg-primary' : 'bg-surface-container-high border border-white/20'}"
+          onclick={() => formUseMacroTrend = !formUseMacroTrend}
+        >
+          <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formUseMacroTrend ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+        </button>
       </div>
 
       <div>

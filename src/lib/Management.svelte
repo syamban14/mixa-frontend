@@ -40,6 +40,7 @@
   let formUseTrailingBuy = $state(false);
   let formTrailingBuyPct = $state(1.0);
   let formUseWhaleRadar = $state(false);
+  let formUseAutotune = $state(false);
 
   function openSettings(coin) {
     selectedCoin = coin;
@@ -61,6 +62,7 @@
     formUseTrailingBuy = coin.use_trailing_buy || false;
     formTrailingBuyPct = coin.trailing_buy_pct || 1.0;
     formUseWhaleRadar = coin.use_whale_radar || false;
+    formUseAutotune = coin.use_autotune || false;
     showModal = true;
   }
 
@@ -89,7 +91,8 @@
           use_macro_trend: formUseMacroTrend,
           use_trailing_buy: formUseTrailingBuy,
           trailing_buy_pct: formTrailingBuyPct,
-          use_whale_radar: formUseWhaleRadar
+          use_whale_radar: formUseWhaleRadar,
+          use_autotune: formUseAutotune
         })
       });
       if (res.ok) {
@@ -111,6 +114,7 @@
         selectedCoin.use_trailing_buy = formUseTrailingBuy;
         selectedCoin.trailing_buy_pct = formTrailingBuyPct;
         selectedCoin.use_whale_radar = formUseWhaleRadar;
+        selectedCoin.use_autotune = formUseAutotune;
         showModal = false;
       } else {
         alert("Gagal menyimpan konfigurasi.");
@@ -258,8 +262,32 @@
           <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formIsActive ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
         </button>
       </div>
+      
+      <div class="p-6 rounded-xl bg-gradient-to-br from-tertiary/20 to-transparent border border-tertiary/30 relative overflow-hidden mt-6 mb-6">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-tertiary/10 rounded-full blur-2xl"></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <h4 class="text-body-lg font-bold text-tertiary flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px]">smart_toy</span>
+              AI Autopilot (Auto-Tune)
+              <span class="px-2 py-0.5 rounded text-[9px] bg-tertiary/20 text-tertiary uppercase font-bold tracking-wider">
+                Fase 4
+              </span>
+            </h4>
+            <p class="text-sm text-on-surface-variant mt-1">
+              Biarkan bot mengatur strategi (MA/RSI/BB) dan parameter DCA/SL berdasarkan volatilitas dan tren pasar secara otomatis.
+            </p>
+          </div>
+          <button 
+            class="relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none shrink-0 {formUseAutotune ? 'bg-tertiary' : 'bg-surface-container-high border border-white/20'}"
+            onclick={() => formUseAutotune = !formUseAutotune}
+          >
+            <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full transition-transform duration-300 shadow-sm {formUseAutotune ? 'translate-x-6 bg-black' : 'translate-x-0 bg-on-surface-variant'}"></span>
+          </button>
+        </div>
+      </div>
 
-      <div class="grid grid-cols-2 gap-4">
+      <div class="grid grid-cols-2 gap-4 {formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
         <div>
           <label class="block text-body-md font-bold text-on-surface-variant mb-2">Buy Amount (Rp)</label>
           <input type="number" bind:value={formBuyAmount} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary font-mono text-data-numeric">
@@ -271,7 +299,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="{formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
         <label class="block text-body-md font-bold text-on-surface-variant mb-2">Strategi Aktif</label>
         <select bind:value={formStrategy} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary cursor-pointer">
           {#each availableStrategies as strat}

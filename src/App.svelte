@@ -7,6 +7,7 @@
   import Management from './lib/Management.svelte';
   import Config from './lib/Config.svelte';
   import Logs from './lib/Logs.svelte';
+  import Backtest from './lib/Backtest.svelte';
 
   let states = $state([]);
   let activeStates = $derived(states.filter(c => c.is_active));
@@ -74,6 +75,8 @@
             <Management coins={states} />
           {:else if activePage === 'config'}
             <Config />
+          {:else if activePage === 'backtest'}
+            <Backtest coins={states} />
           {:else if activePage === 'logs'}
             <Logs />
           {/if}

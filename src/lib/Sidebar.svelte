@@ -5,6 +5,7 @@
     { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
     { id: 'management', label: 'Bot Management', icon: 'precision_manufacturing' },
     { id: 'config', label: 'Bot Configuration', icon: 'settings_input_component' },
+    { id: 'backtest', label: 'Laboratorium', icon: 'science' },
     { id: 'history', label: 'Transaction History', icon: 'receipt_long' },
   ];
 </script>

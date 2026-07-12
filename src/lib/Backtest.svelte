@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   
-  export let coins = [];
+  let { coins = [] } = $props();
   
   let selectedSymbol = $state('');
   let initialCapital = $state(1000000);

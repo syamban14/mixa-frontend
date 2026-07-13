@@ -349,16 +349,10 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-2 gap-4 {formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
-        <div>
-          <label class="block text-body-md font-bold text-on-surface-variant mb-2">Buy Amount (Rp)</label>
-          <input type="number" bind:value={formBuyAmount} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary font-mono text-data-numeric">
-        </div>
-        <div>
-          <label class="block text-body-md font-bold text-on-surface-variant mb-2">Harga Beli Manual (Rp)</label>
-          <input type="number" bind:value={formEntryPrice} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary font-mono text-data-numeric">
-          <p class="text-[10px] text-on-surface-variant mt-1">Kosongkan/0 jika ingin otomatis dari bot.</p>
-        </div>
+      <div class="{formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
+        <label class="block text-body-md font-bold text-on-surface-variant mb-2">Harga Beli Manual (Rp)</label>
+        <input type="number" bind:value={formEntryPrice} class="w-full bg-surface-container border border-white/10 rounded-xl px-5 py-4 text-lg text-on-surface focus:outline-none focus:border-primary font-mono text-data-numeric">
+        <p class="text-[10px] text-on-surface-variant mt-1">Kosongkan/0 jika ingin otomatis dari bot.</p>
       </div>
 
       <div class="{formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
@@ -398,7 +392,7 @@
         <p class="text-sm text-on-surface-variant mt-2">Atur porsi modal untuk koin ini. Batas minimal Indodax adalah Rp 10.000.</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-6">
+      <div class="grid grid-cols-2 gap-6 {formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
         <div>
           <label class="block text-body-md font-bold text-on-surface-variant mb-2 text-primary">Take Profit (%)</label>
           <div class="relative">
@@ -415,7 +409,7 @@
         </div>
       </div>
 
-      <div class="p-6 rounded-xl bg-surface-container border border-primary/20 relative overflow-hidden">
+      <div class="p-6 rounded-xl bg-surface-container border border-primary/20 relative overflow-hidden {formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
         
         <div class="flex items-center justify-between mb-4">
@@ -452,7 +446,7 @@
         {/if}
       </div>
 
-      <div class="p-6 rounded-xl bg-surface-container border border-tertiary/20 relative overflow-hidden">
+      <div class="p-6 rounded-xl bg-surface-container border border-tertiary/20 relative overflow-hidden {formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-tertiary/5 rounded-full blur-2xl"></div>
         
         <div class="flex items-center justify-between mb-4">
@@ -489,7 +483,7 @@
       </div>
 
       <!-- DCA SECTION -->
-      <div class="p-6 rounded-xl bg-surface-container border border-secondary/20 relative overflow-hidden">
+      <div class="p-6 rounded-xl bg-surface-container border border-secondary/20 relative overflow-hidden {formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
         <div class="absolute -right-6 -top-6 w-32 h-32 bg-secondary/5 rounded-full blur-2xl"></div>
         
         <div class="flex items-center justify-between mb-4">
@@ -545,7 +539,7 @@
         {/if}
       </div>
 
-      <div class="p-6 rounded-xl bg-surface-container border border-primary/20 relative overflow-hidden">
+      <div class="p-6 rounded-xl bg-surface-container border border-primary/20 relative overflow-hidden {formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
         <div class="absolute -left-6 -top-6 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
         
         <div class="flex items-center justify-between mb-4">
@@ -582,7 +576,7 @@
         {/if}
       </div>
 
-      <div class="p-6 rounded-xl bg-surface-container border border-error/20 relative overflow-hidden">
+      <div class="p-6 rounded-xl bg-surface-container border border-error/20 relative overflow-hidden {formUseAutotune ? 'opacity-50 pointer-events-none' : ''}">
         <div class="absolute -left-6 -top-6 w-32 h-32 bg-error/5 rounded-full blur-2xl"></div>
         
         <div class="flex items-center justify-between">

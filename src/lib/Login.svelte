@@ -35,14 +35,14 @@
   }
 </script>
 
-<div class="relative min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center p-4 overflow-hidden">
+<div class="relative bg-[#0a0a0a] overflow-hidden" style="width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;">
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
     <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px]"></div>
     <div class="absolute top-[60%] -right-[10%] w-[40%] h-[40%] bg-secondary/10 rounded-full blur-[120px]"></div>
   </div>
   
-  <div class="w-full max-w-md relative z-10 animate-in zoom-in-95 duration-500">
-    <div class="glass rounded-2xl p-8 shadow-2xl border border-white/10">
+  <div class="relative z-10" style="width: 100%; max-width: 448px; padding: 0 16px; flex-shrink: 0;">
+    <div class="glass rounded-2xl p-8 shadow-2xl border border-white/10" style="width: 100%;">
       <div class="text-center mb-8">
         <div class="w-16 h-16 mx-auto bg-primary/20 rounded-full flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-primary text-3xl">lock</span>

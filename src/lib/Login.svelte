@@ -23,7 +23,7 @@
         const data = await res.json();
         // Simpan token ke localStorage
         localStorage.setItem('mixa_token', data.token);
-        onLogin();
+        window.location.reload();
       } else {
         errorMsg = 'Password yang Anda masukkan salah.';
       }

@@ -46,7 +46,10 @@
   let isAddingCoin = $state(false);
 
   async function addNewCoin() {
-    if (!newCoinSymbol) return;
+    if (!newCoinSymbol || newCoinSymbol.trim() === '') {
+      alert("Silakan ketikkan nama koin (contoh: BTC/IDR) di kolom teks terlebih dahulu!");
+      return;
+    }
     isAddingCoin = true;
     try {
       const res = await fetch('/api/coin', {
@@ -184,8 +187,7 @@
       >
       <button 
         onclick={addNewCoin} 
-        disabled={isAddingCoin || !newCoinSymbol}
-        class="flex items-center gap-1 bg-primary text-background px-4 py-2 rounded-xl font-bold text-sm hover:bg-primary/90 transition-all disabled:opacity-50"
+        class="flex items-center gap-1 bg-primary text-background px-4 py-2 rounded-xl font-bold text-sm hover:bg-primary/90 transition-all active:scale-95"
       >
         <span class="material-symbols-outlined text-[18px]">add</span>
         Tambah

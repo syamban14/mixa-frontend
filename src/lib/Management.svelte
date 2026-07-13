@@ -42,6 +42,48 @@
   let formUseWhaleRadar = $state(false);
   let formUseAutotune = $state(false);
 
+  let newCoinSymbol = $state('');
+  let isAddingCoin = $state(false);
+
+  async function addNewCoin() {
+    if (!newCoinSymbol) return;
+    isAddingCoin = true;
+    try {
+      const res = await fetch('/api/coin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ symbol: newCoinSymbol })
+      });
+      if (res.ok) {
+        newCoinSymbol = '';
+        alert("Koin berhasil ditambahkan!");
+      } else {
+        const error = await res.json();
+        alert("Gagal menambahkan koin: " + (error.detail || "Kesalahan server"));
+      }
+    } catch (e) {
+      alert("Error: " + e.message);
+    } finally {
+      isAddingCoin = false;
+    }
+  }
+
+  async function deleteCoin(coin) {
+    if (!confirm(`Yakin ingin menonaktifkan ${coin.symbol}? Koin akan disembunyikan.`)) return;
+    try {
+      const symbolPath = coin.symbol.replace('/', '%2F');
+      const res = await fetch(`/api/coin/${symbolPath}`, { method: 'DELETE' });
+      if (res.ok) {
+        alert(`${coin.symbol} berhasil dinonaktifkan.`);
+        showModal = false;
+      } else {
+        alert("Gagal menghapus koin.");
+      }
+    } catch(e) {
+      alert("Error: " + e.message);
+    }
+  }
+
   function openSettings(coin) {
     selectedCoin = coin;
     formTp = coin.take_profit_pct || 10.0;
@@ -130,6 +172,23 @@
     <div>
       <h2 class="text-headline-md text-on-surface">Bot Management</h2>
       <p class="text-on-surface-variant text-body-sm">Monitor and control your automated trading strategies in real-time.</p>
+    </div>
+    
+    <div class="flex items-center gap-2">
+      <input 
+        type="text" 
+        bind:value={newCoinSymbol} 
+        placeholder="Cth: SHIB/IDR" 
+        class="bg-surface-container border border-white/10 rounded-xl px-4 py-2 text-on-surface focus:outline-none focus:border-primary font-mono text-sm w-40"
+      >
+      <button 
+        onclick={addNewCoin} 
+        disabled={isAddingCoin || !newCoinSymbol}
+        class="flex items-center gap-1 bg-primary text-background px-4 py-2 rounded-xl font-bold text-sm hover:bg-primary/90 transition-all disabled:opacity-50"
+      >
+        <span class="material-symbols-outlined text-[18px]">add</span>
+        Tambah
+      </button>
     </div>
   </div>
 
@@ -547,13 +606,19 @@
       </div>
     </div>
 
-    <div class="mt-10 flex justify-end gap-4">
-      <button onclick={() => showModal = false} class="px-8 py-4 rounded-full text-lg text-on-surface hover:bg-white/5 transition-colors font-semibold">
-        Batal
+    <div class="mt-10 flex justify-between items-center">
+      <button onclick={() => deleteCoin(selectedCoin)} class="flex items-center gap-2 text-error hover:text-error/80 px-4 py-2 rounded-xl transition-colors font-semibold">
+        <span class="material-symbols-outlined text-[20px]">delete</span>
+        Hapus Koin
       </button>
-      <button onclick={saveSettings} class="px-8 py-4 rounded-full bg-primary text-black text-lg hover:bg-primary-hover font-bold transition-all shadow-[0_0_20px_rgba(78,222,163,0.4)]">
-        Simpan Pengaturan
-      </button>
+      <div class="flex gap-4">
+        <button onclick={() => showModal = false} class="px-8 py-4 rounded-full text-lg text-on-surface hover:bg-white/5 transition-colors font-semibold">
+          Batal
+        </button>
+        <button onclick={saveSettings} class="px-8 py-4 rounded-full bg-primary text-black text-lg hover:bg-primary-hover font-bold transition-all shadow-[0_0_20px_rgba(78,222,163,0.4)]">
+          Simpan Pengaturan
+        </button>
+      </div>
     </div>
   </div>
 </div>

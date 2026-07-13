@@ -16,7 +16,7 @@
   let result = $state(null);
   let errorMsg = $state('');
   
-  const strategies = ['MA Crossover', 'RSI Breakout', 'Bollinger Bands'];
+  const strategies = ['MA Crossover', 'RSI Breakout', 'Bollinger Bands', 'Grid Trading'];
   
   onMount(() => {
     if (coins.length > 0) {
@@ -242,7 +242,7 @@
         <div class="h-full min-h-[400px] flex flex-col items-center justify-center bg-surface-container-low rounded-xl border border-white/5 border-dashed text-on-surface-variant p-8">
           <span class="material-symbols-outlined text-[64px] mb-4 opacity-50">monitoring</span>
           <h3 class="text-title-md font-bold text-on-surface text-center">Area Hasil Backtest</h3>
-          <p class="text-sm w-full max-w-[400px] text-center mt-3 leading-relaxed">
+          <p class="text-sm w-full max-w-2xl text-center mt-3 leading-relaxed">
             Pilih konfigurasi Anda di panel sebelah kiri dan jalankan simulasi untuk melihat grafik keuntungan, win rate, dan riwayat pesanan (order history).
           </p>
         </div>

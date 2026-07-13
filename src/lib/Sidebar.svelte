@@ -3,6 +3,7 @@
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
+    { id: 'performance', label: 'Portofolio', icon: 'pie_chart' },
     { id: 'management', label: 'Bot Management', icon: 'precision_manufacturing' },
     { id: 'config', label: 'Bot Configuration', icon: 'settings_input_component' },
     { id: 'backtest', label: 'Laboratorium', icon: 'science' },

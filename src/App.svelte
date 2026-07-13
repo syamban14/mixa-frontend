@@ -8,6 +8,10 @@
   import Config from './lib/Config.svelte';
   import Logs from './lib/Logs.svelte';
   import Backtest from './lib/Backtest.svelte';
+  import Performance from './lib/Performance.svelte';
+  import Login from './lib/Login.svelte';
+
+  let isAuthenticated = $state(false);
 
   let states = $state([]);
   let activeStates = $derived(states.filter(c => c.is_active));
@@ -34,13 +38,42 @@
   }
 
   onMount(() => {
+    // Global fetch interceptor to append Auth token
+    const originalFetch = window.fetch;
+    window.fetch = async (...args) => {
+      let [resource, config] = args;
+      config = config || {};
+      
+      const token = localStorage.getItem('mixa_token');
+      if (token && resource.startsWith('/api/') && resource !== '/api/login') {
+        config.headers = { ...config.headers, 'Authorization': `Bearer ${token}` };
+      }
+      
+      const response = await originalFetch(resource, config);
+      if (response.status === 401) {
+        isAuthenticated = false;
+        localStorage.removeItem('mixa_token');
+      }
+      return response;
+    };
+
+    if (localStorage.getItem('mixa_token')) {
+      isAuthenticated = true;
+    }
+
     fetchStatus();
-    const interval = setInterval(fetchStatus, 10000);
+    const interval = setInterval(() => {
+      if (isAuthenticated) fetchStatus();
+    }, 10000);
     return () => clearInterval(interval);
   });
 </script>
 
-<div class="flex min-h-screen">
+{#if !isAuthenticated}
+  <Login onLogin={() => { isAuthenticated = true; fetchStatus(); }} />
+{/if}
+
+<div class="flex min-h-screen {isAuthenticated ? '' : 'hidden'}">
   <Sidebar bind:activePage />
 
   <main class="flex-1 ml-64 min-h-screen flex flex-col">
@@ -77,6 +110,8 @@
             <Config />
           {:else if activePage === 'backtest'}
             <Backtest coins={states} />
+          {:else if activePage === 'performance'}
+            <Performance />
           {:else if activePage === 'logs'}
             <Logs />
           {/if}

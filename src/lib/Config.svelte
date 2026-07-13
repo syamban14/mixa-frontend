@@ -5,6 +5,8 @@
   let initialBalance = $state(0);
   let telegramToken = $state('');
   let telegramChatId = $state('');
+  let indodaxApiKey = $state('');
+  let indodaxSecretKey = $state('');
   let isSaving = $state(false);
   let isTesting = $state(false);
   let showSuccess = $state(false);
@@ -27,6 +29,8 @@
         if (data.initial_balance !== undefined) initialBalance = data.initial_balance;
         if (data.telegram_token) telegramToken = data.telegram_token;
         if (data.telegram_chat_id) telegramChatId = data.telegram_chat_id;
+        if (data.indodax_api_key) indodaxApiKey = data.indodax_api_key;
+        if (data.indodax_secret_key) indodaxSecretKey = data.indodax_secret_key;
       }
     } catch (e) {
       console.error('Gagal mengambil konfigurasi:', e);
@@ -44,7 +48,9 @@
           gemini_model: geminiModel, 
           initial_balance: initialBalance,
           telegram_token: telegramToken,
-          telegram_chat_id: telegramChatId
+          telegram_chat_id: telegramChatId,
+          indodax_api_key: indodaxApiKey,
+          indodax_secret_key: indodaxSecretKey
         })
       });
       if (res.ok) {
@@ -168,6 +174,34 @@
               Test Ping
             {/if}
           </button>
+        </div>
+
+        <!-- Indodax Config -->
+        <div class="pt-6 border-t border-white/10">
+          <h3 class="text-title-md font-bold mb-4 flex items-center gap-2">
+            <span class="material-symbols-outlined text-tertiary">key</span> API Key Indodax
+          </h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-label-mono text-on-surface-variant uppercase tracking-wider mb-2">API Key</label>
+              <input 
+                type="password" 
+                bind:value={indodaxApiKey} 
+                class="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-mono text-sm"
+                placeholder="Indodax API Key..."
+              />
+            </div>
+            <div>
+              <label class="block text-label-mono text-on-surface-variant uppercase tracking-wider mb-2">Secret Key</label>
+              <input 
+                type="password" 
+                bind:value={indodaxSecretKey} 
+                class="w-full bg-background border border-white/10 rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-mono text-sm"
+                placeholder="Indodax Secret Key..."
+              />
+            </div>
+          </div>
+          <p class="text-xs text-on-surface-variant mt-3">Disimpan secara aman di database lokal Anda. Hanya masukkan jika Anda ingin bot mengeksekusi perdagangan sungguhan.</p>
         </div>
       </div>
 

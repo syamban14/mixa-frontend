@@ -57,6 +57,7 @@
       if (res.ok) {
         newCoinSymbol = '';
         alert("Koin berhasil ditambahkan!");
+        window.location.reload();
       } else {
         const error = await res.json();
         alert("Gagal menambahkan koin: " + (error.detail || "Kesalahan server"));

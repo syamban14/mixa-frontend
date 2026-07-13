@@ -45,10 +45,11 @@
         <span class="material-symbols-outlined">sensors</span>
         <span class="text-body-sm">Live Status</span>
       </a>
-      <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high transition-colors" href="#support">
-        <span class="material-symbols-outlined">help_outline</span>
-        <span class="text-body-sm">Support</span>
-      </a>
+      
+      <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-error hover:bg-error/10 transition-colors mt-2" onclick={() => { localStorage.removeItem('mixa_token'); window.location.reload(); }}>
+        <span class="material-symbols-outlined">logout</span>
+        <span class="text-body-sm font-bold">Logout</span>
+      </button>
     </div>
   </div>
 </aside>

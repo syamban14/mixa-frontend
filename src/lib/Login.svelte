@@ -35,7 +35,7 @@
   }
 </script>
 
-<div class="fixed inset-0 bg-[#0a0a0a] z-[100] flex items-center justify-center p-4">
+<div class="relative min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center p-4 overflow-hidden">
   <div class="absolute inset-0 overflow-hidden pointer-events-none">
     <div class="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px]"></div>
     <div class="absolute top-[60%] -right-[10%] w-[40%] h-[40%] bg-secondary/10 rounded-full blur-[120px]"></div>

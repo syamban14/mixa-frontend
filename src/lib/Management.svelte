@@ -73,13 +73,13 @@
   }
 
   async function deleteCoin(coin) {
-    if (!confirm(`Yakin ingin menonaktifkan ${coin.symbol}? Koin akan disembunyikan.`)) return;
+    if (!confirm(`Yakin ingin MENGHAPUS koin ${coin.symbol} secara permanen dari database?`)) return;
     try {
       const symbolPath = coin.symbol.replace('/', '%2F');
       const res = await fetch(`/api/coin/${symbolPath}`, { method: 'DELETE' });
       if (res.ok) {
-        alert(`${coin.symbol} berhasil dinonaktifkan.`);
-        showModal = false;
+        alert(`${coin.symbol} berhasil dihapus dari database.`);
+        window.location.reload();
       } else {
         alert("Gagal menghapus koin.");
       }

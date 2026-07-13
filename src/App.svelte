@@ -71,65 +71,65 @@
 
 {#if !isAuthenticated}
   <Login onLogin={() => { isAuthenticated = true; fetchStatus(); }} />
+{:else}
+  <div class="flex min-h-screen">
+    <Sidebar bind:activePage />
+
+    <main class="flex-1 ml-64 min-h-screen flex flex-col">
+      <TopNav coins={activeStates} bind:activeCoinIndex />
+
+      <div class="mt-16 p-6 space-y-4 flex-1">
+        {#if loading}
+          <div class="flex flex-col items-center justify-center h-[60vh]">
+            <div class="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
+            <h2 class="text-headline-md text-on-surface">Menghubungkan ke Mesin Utama...</h2>
+            <p class="text-on-surface-variant mt-2">Pastikan FastAPI berjalan di <code class="text-primary">port 8000</code></p>
+          </div>
+        {:else if states.length === 0}
+          <div class="glass rounded-xl p-8 flex flex-col items-center justify-center h-[60vh]">
+            <span class="material-symbols-outlined text-[64px] text-on-surface-variant mb-4">database</span>
+            <h2 class="text-headline-md text-on-surface">Database Kosong</h2>
+            <p class="text-on-surface-variant mt-2">Jalankan <code class="text-primary">python main.py</code> terlebih dahulu.</p>
+          </div>
+        {:else if activePage !== 'management' && activeStates.length === 0}
+          <div class="glass rounded-xl p-8 flex flex-col items-center justify-center h-[60vh]">
+            <span class="material-symbols-outlined text-[64px] text-tertiary mb-4">power_off</span>
+            <h2 class="text-headline-md text-on-surface">Tidak Ada Koin Aktif</h2>
+            <p class="text-on-surface-variant mt-2">Masuk ke menu <button class="text-primary font-bold hover:underline" onclick={() => activePage = 'management'}>Bot Management</button> untuk mengaktifkan koin.</p>
+          </div>
+        {:else}
+          {#key `${activePage}-${activeStates[activeCoinIndex]?.symbol}`}
+            {#if activePage === 'dashboard'}
+              <Dashboard coin={activeStates[activeCoinIndex]} coins={activeStates} />
+            {:else if activePage === 'history'}
+              <History coin={activeStates[activeCoinIndex]} />
+            {:else if activePage === 'management'}
+              <Management coins={states} />
+            {:else if activePage === 'config'}
+              <Config />
+            {:else if activePage === 'backtest'}
+              <Backtest coins={states} />
+            {:else if activePage === 'performance'}
+              <Performance />
+            {:else if activePage === 'logs'}
+              <Logs />
+            {/if}
+          {/key}
+
+          <div class="flex items-center justify-between px-2 pt-4 opacity-50">
+            <div class="flex items-center gap-4 text-[10px] uppercase tracking-widest font-bold">
+              <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> System Online</span>
+              <span>Exchange: Indodax</span>
+              <span>API Status: Stable</span>
+            </div>
+            <div class="text-[10px] text-right">
+              Last sync: {activeStates[activeCoinIndex]?.last_update
+                ? new Date(activeStates[activeCoinIndex].last_update).toLocaleString('id-ID')
+                : '-'} WIB
+            </div>
+          </div>
+        {/if}
+      </div>
+    </main>
+  </div>
 {/if}
-
-<div class="flex min-h-screen {isAuthenticated ? '' : 'hidden'}">
-  <Sidebar bind:activePage />
-
-  <main class="flex-1 ml-64 min-h-screen flex flex-col">
-    <TopNav coins={activeStates} bind:activeCoinIndex />
-
-    <div class="mt-16 p-6 space-y-4 flex-1">
-      {#if loading}
-        <div class="flex flex-col items-center justify-center h-[60vh]">
-          <div class="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin mb-4"></div>
-          <h2 class="text-headline-md text-on-surface">Menghubungkan ke Mesin Utama...</h2>
-          <p class="text-on-surface-variant mt-2">Pastikan FastAPI berjalan di <code class="text-primary">port 8000</code></p>
-        </div>
-      {:else if states.length === 0}
-        <div class="glass rounded-xl p-8 flex flex-col items-center justify-center h-[60vh]">
-          <span class="material-symbols-outlined text-[64px] text-on-surface-variant mb-4">database</span>
-          <h2 class="text-headline-md text-on-surface">Database Kosong</h2>
-          <p class="text-on-surface-variant mt-2">Jalankan <code class="text-primary">python main.py</code> terlebih dahulu.</p>
-        </div>
-      {:else if activePage !== 'management' && activeStates.length === 0}
-        <div class="glass rounded-xl p-8 flex flex-col items-center justify-center h-[60vh]">
-          <span class="material-symbols-outlined text-[64px] text-tertiary mb-4">power_off</span>
-          <h2 class="text-headline-md text-on-surface">Tidak Ada Koin Aktif</h2>
-          <p class="text-on-surface-variant mt-2">Masuk ke menu <button class="text-primary font-bold hover:underline" onclick={() => activePage = 'management'}>Bot Management</button> untuk mengaktifkan koin.</p>
-        </div>
-      {:else}
-        {#key `${activePage}-${activeStates[activeCoinIndex]?.symbol}`}
-          {#if activePage === 'dashboard'}
-            <Dashboard coin={activeStates[activeCoinIndex]} coins={activeStates} />
-          {:else if activePage === 'history'}
-            <History coin={activeStates[activeCoinIndex]} />
-          {:else if activePage === 'management'}
-            <Management coins={states} />
-          {:else if activePage === 'config'}
-            <Config />
-          {:else if activePage === 'backtest'}
-            <Backtest coins={states} />
-          {:else if activePage === 'performance'}
-            <Performance />
-          {:else if activePage === 'logs'}
-            <Logs />
-          {/if}
-        {/key}
-
-        <div class="flex items-center justify-between px-2 pt-4 opacity-50">
-          <div class="flex items-center gap-4 text-[10px] uppercase tracking-widest font-bold">
-            <span class="flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> System Online</span>
-            <span>Exchange: Indodax</span>
-            <span>API Status: Stable</span>
-          </div>
-          <div class="text-[10px] text-right">
-            Last sync: {activeStates[activeCoinIndex]?.last_update
-              ? new Date(activeStates[activeCoinIndex].last_update).toLocaleString('id-ID')
-              : '-'} WIB
-          </div>
-        </div>
-      {/if}
-    </div>
-  </main>
-</div>

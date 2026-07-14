@@ -147,6 +147,16 @@
 <div class="grid grid-cols-12 gap-4">
   <!-- Summary Card (4 cols) -->
   <div class="col-span-12 lg:col-span-4 glass rounded-xl p-5 flex flex-col justify-between overflow-hidden relative group">
+    
+    {#if coin?.cooldown_remaining_minutes > 0}
+      <div class="absolute inset-0 bg-background/50 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center pointer-events-none">
+        <div class="bg-secondary/10 border-[3px] border-secondary text-secondary px-6 py-3 rounded-xl transform -rotate-12 shadow-[0_0_20px_rgba(var(--color-secondary),0.3)] backdrop-blur-md flex flex-col items-center">
+           <span class="font-black text-2xl tracking-widest uppercase">REHAT BELI</span>
+           <span class="text-sm font-bold mt-1">Sisa: {coin.cooldown_remaining_minutes} Menit</span>
+        </div>
+      </div>
+    {/if}
+
     <div class="relative z-10">
       <div class="flex justify-between items-start mb-4">
         <p class="text-label-mono text-on-surface-variant uppercase tracking-wider">Total Aset Portfolio</p>

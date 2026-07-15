@@ -34,9 +34,17 @@
     }
   }
   
+  let user = $state(null);
+
   onMount(() => {
     fetchNotifications();
     pollInterval = setInterval(fetchNotifications, 10000); // Poll tiap 10 detik
+    
+    // Ambil data user Google dari localStorage
+    try {
+      const u = localStorage.getItem('mixa_user');
+      if (u) user = JSON.parse(u);
+    } catch(e) {}
   });
   
   onDestroy(() => {
@@ -160,8 +168,33 @@
       {/if}
     </div>
 
-    <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/20 text-primary transition-colors">
-      <span class="material-symbols-outlined text-[20px]">account_circle</span>
-    </button>
+    <div class="relative group">
+      <button class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/20 text-primary transition-colors overflow-hidden border border-primary/30 group-hover:border-primary">
+        {#if user?.picture}
+          <img src={user.picture} alt="Profile" class="w-full h-full object-cover" referrerpolicy="no-referrer" />
+        {:else}
+          <span class="material-symbols-outlined text-[20px]">account_circle</span>
+        {/if}
+      </button>
+      
+      <!-- Logout Tooltip -->
+      <div class="absolute right-0 top-full mt-2 w-48 bg-surface border border-white/10 rounded-xl shadow-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+        <div class="px-4 py-2 border-b border-white/10 mb-1">
+          <p class="text-xs text-on-surface font-bold truncate">{user?.name || 'Admin'}</p>
+          <p class="text-[10px] text-on-surface-variant truncate">{user?.email || 'admin@mixa.ai'}</p>
+        </div>
+        <button 
+          onclick={() => {
+            localStorage.removeItem('mixa_token');
+            localStorage.removeItem('mixa_user');
+            window.location.reload();
+          }}
+          class="w-full text-left px-4 py-2 text-error text-xs font-bold hover:bg-error/10 transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-[16px]">logout</span>
+          Keluar (Logout)
+        </button>
+      </div>
+    </div>
   </div>
 </header>

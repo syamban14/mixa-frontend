@@ -88,6 +88,32 @@
     }
   }
 
+  async function addNewCoin() {
+    if (!newCoinSymbol) return;
+    try {
+      const symbolPath = newCoinSymbol.toUpperCase().replace('/', '%2F');
+      const res = await fetch(`/api/bot-config/${symbolPath}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          is_active: true,
+          strategy: 'MA Crossover',
+          take_profit_pct: 10.0,
+          stop_loss_pct: 5.0,
+          buy_amount: 20000.0
+        })
+      });
+      if (res.ok) {
+        alert(`${newCoinSymbol} berhasil ditambahkan!`);
+        window.location.reload();
+      } else {
+        alert("Gagal menambahkan koin.");
+      }
+    } catch(e) {
+      alert("Error: " + e.message);
+    }
+  }
+
   function openSettings(coin) {
     selectedCoin = coin;
     formTp = coin.take_profit_pct || 10.0;

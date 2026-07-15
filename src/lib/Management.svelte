@@ -44,6 +44,34 @@
 
   let newCoinSymbol = $state('');
   let isAddingCoin = $state(false);
+  
+  let autoScreenerEnabled = $state(false);
+
+  import { onMount } from 'svelte';
+  onMount(async () => {
+    try {
+      const res = await fetch('/api/config');
+      if (res.ok) {
+        const config = await res.json();
+        autoScreenerEnabled = config.auto_screener_enabled || false;
+      }
+    } catch (e) {
+      console.error("Gagal mengambil konfigurasi screener", e);
+    }
+  });
+
+  async function toggleAutoScreener() {
+    autoScreenerEnabled = !autoScreenerEnabled;
+    try {
+      await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ auto_screener_enabled: autoScreenerEnabled })
+      });
+    } catch(e) {
+      console.error("Gagal mengubah konfigurasi screener", e);
+    }
+  }
 
   async function addNewCoin() {
     if (!newCoinSymbol || newCoinSymbol.trim() === '') {
@@ -180,20 +208,35 @@
       <p class="text-on-surface-variant text-body-sm">Monitor and control your automated trading strategies in real-time.</p>
     </div>
     
-    <div class="flex items-center gap-2">
-      <input 
-        type="text" 
-        bind:value={newCoinSymbol} 
-        placeholder="Cth: SHIB/IDR" 
-        class="bg-surface-container border border-white/10 rounded-xl px-4 py-2 text-on-surface focus:outline-none focus:border-primary font-mono text-sm w-40"
-      >
-      <button 
-        onclick={addNewCoin} 
-        class="flex items-center gap-1 bg-primary text-background px-4 py-2 rounded-xl font-bold text-sm hover:bg-primary/90 transition-all active:scale-95"
-      >
-        <span class="material-symbols-outlined text-[18px]">add</span>
-        Tambah
-      </button>
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 bg-surface-container border border-white/10 rounded-xl px-4 py-2">
+        <span class="text-on-surface text-sm font-bold flex items-center gap-2">
+          <span class="material-symbols-outlined text-primary text-[18px]">radar</span>
+          AI Screener
+        </span>
+        <button 
+          class="relative w-10 h-5 rounded-full transition-colors duration-300 focus:outline-none shrink-0 {autoScreenerEnabled ? 'bg-primary' : 'bg-background border border-white/20'}"
+          onclick={toggleAutoScreener}
+        >
+          <span class="absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-300 shadow-sm {autoScreenerEnabled ? 'translate-x-5' : 'translate-x-0'}"></span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <input 
+          type="text" 
+          bind:value={newCoinSymbol} 
+          placeholder="Cth: SHIB/IDR" 
+          class="bg-surface-container border border-white/10 rounded-xl px-4 py-2 text-on-surface focus:outline-none focus:border-primary font-mono text-sm w-40"
+        >
+        <button 
+          onclick={addNewCoin} 
+          class="flex items-center gap-1 bg-primary text-background px-4 py-2 rounded-xl font-bold text-sm hover:bg-primary/90 transition-all active:scale-95"
+        >
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          Tambah
+        </button>
+      </div>
     </div>
   </div>
 

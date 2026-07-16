@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte';
   let { activePage = $bindable('dashboard') } = $props();
 
   const navItems = [
@@ -9,6 +10,14 @@
     { id: 'backtest', label: 'Laboratorium', icon: 'science' },
     { id: 'history', label: 'Transaction History', icon: 'receipt_long' },
   ];
+  
+  let isAdmin = $state(false);
+  onMount(() => {
+    try {
+      const u = JSON.parse(localStorage.getItem('mixa_user'));
+      if (u && u.email === 'admin@mixa.ai') isAdmin = true;
+    } catch(e) {}
+  });
 </script>
 
 <aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-white/10 shadow-md flex flex-col py-6 px-4 z-50">
@@ -18,6 +27,15 @@
   </div>
 
   <nav class="flex-1 space-y-1">
+    {#if isAdmin}
+      <button
+        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors active:scale-95 duration-150 text-left mb-2 text-warning font-bold hover:bg-warning/10 {activePage === 'admin' ? 'bg-warning/20 border-r-2 border-warning' : ''}"
+        onclick={() => activePage = 'admin'}
+      >
+        <span class="material-symbols-outlined text-warning">shield_person</span>
+        <span class="text-body-md">Admin Panel</span>
+      </button>
+    {/if}
     {#each navItems as item}
       <button
         class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors active:scale-95 duration-150 text-left

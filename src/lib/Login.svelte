@@ -53,7 +53,7 @@
           localStorage.setItem('mixa_user', JSON.stringify(data.user));
           window.location.reload();
         } else {
-          errorMsg = 'Masa berlangganan atau masa percobaan (Trial) Anda telah habis. Silakan perpanjang.';
+          errorMsg = 'Masa aktif Anda habis. Silakan hubungi WA: 08123456789 untuk perpanjangan langganan (Rp 10.000/bulan).';
         }
       } else {
         const errorData = await res.json();

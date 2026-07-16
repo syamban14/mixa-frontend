@@ -11,6 +11,7 @@
   import Performance from './lib/Performance.svelte';
   import Login from './lib/Login.svelte';
   import AdminPanel from './lib/AdminPanel.svelte';
+  import SuperAdmin from './lib/SuperAdmin.svelte';
 
   let isAuthenticated = $state(false);
 
@@ -86,6 +87,8 @@
             <h2 class="text-headline-md text-on-surface">Menghubungkan ke Mesin Utama...</h2>
             <p class="text-on-surface-variant mt-2">Pastikan FastAPI berjalan di <code class="text-primary">port 8000</code></p>
           </div>
+        {:else if activePage === 'superadmin'}
+          <SuperAdmin />
         {:else if activePage === 'admin'}
           <AdminPanel />
         {:else if states.length === 0}

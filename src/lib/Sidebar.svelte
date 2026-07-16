@@ -28,11 +28,18 @@
   <nav class="flex-1 space-y-1">
     {#if isAdmin}
       <button
+        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors active:scale-95 duration-150 text-left mb-1 text-warning font-bold hover:bg-warning/10 {activePage === 'superadmin' ? 'bg-warning/20 border-r-2 border-warning' : ''}"
+        onclick={() => activePage = 'superadmin'}
+      >
+        <span class="material-symbols-outlined text-warning">admin_panel_settings</span>
+        <span class="text-body-md">Super Admin</span>
+      </button>
+      <button
         class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors active:scale-95 duration-150 text-left mb-2 text-warning font-bold hover:bg-warning/10 {activePage === 'admin' ? 'bg-warning/20 border-r-2 border-warning' : ''}"
         onclick={() => activePage = 'admin'}
       >
         <span class="material-symbols-outlined text-warning">shield_person</span>
-        <span class="text-body-md">Admin Panel</span>
+        <span class="text-body-md">User Management</span>
       </button>
     {/if}
     {#each navItems as item}

@@ -46,6 +46,7 @@
   let isAddingCoin = $state(false);
   
   let autoScreenerEnabled = $state(false);
+  let maxActiveCoins = $state(5);
 
   import { onMount } from 'svelte';
   onMount(async () => {
@@ -54,6 +55,7 @@
       if (res.ok) {
         const config = await res.json();
         autoScreenerEnabled = config.auto_screener_enabled || false;
+        maxActiveCoins = config.max_active_coins || 5;
       }
     } catch (e) {
       console.error("Gagal mengambil konfigurasi screener", e);
@@ -70,6 +72,18 @@
       });
     } catch(e) {
       console.error("Gagal mengubah konfigurasi screener", e);
+    }
+  }
+
+  async function saveMaxCoins() {
+    try {
+      await fetch('/api/config', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ max_active_coins: maxActiveCoins })
+      });
+    } catch(e) {
+      console.error("Gagal menyimpan max koin", e);
     }
   }
 
@@ -220,6 +234,15 @@
         >
           <span class="absolute top-0.5 left-0.5 bg-white w-4 h-4 rounded-full transition-transform duration-300 shadow-sm {autoScreenerEnabled ? 'translate-x-5' : 'translate-x-0'}"></span>
         </button>
+        <div class="w-px h-5 bg-white/10 mx-1"></div>
+        <input 
+          type="number" 
+          bind:value={maxActiveCoins} 
+          onblur={saveMaxCoins}
+          min="1" max="10"
+          class="bg-black/20 w-12 text-center rounded border border-white/10 text-xs py-1 text-on-surface font-mono"
+          title="Maksimal Koin Aktif"
+        />
       </div>
 
       <div class="flex items-center gap-2">

@@ -6,7 +6,6 @@
     { id: 'dashboard', label: 'Dashboard', icon: 'dashboard' },
     { id: 'performance', label: 'Portofolio', icon: 'pie_chart' },
     { id: 'management', label: 'Bot Management', icon: 'precision_manufacturing' },
-    { id: 'config', label: 'Bot Configuration', icon: 'settings_input_component' },
     { id: 'backtest', label: 'Laboratorium', icon: 'science' },
     { id: 'history', label: 'Transaction History', icon: 'receipt_long' },
   ];
@@ -38,10 +37,10 @@
     {/if}
     {#each navItems as item}
       <button
-        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors active:scale-95 duration-150 text-left
+        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all active:scale-95 duration-200 text-left hover:translate-x-1.5
           {activePage === item.id
             ? 'text-primary font-bold border-r-2 border-primary bg-primary/5'
-            : 'text-on-surface-variant font-medium hover:bg-surface-container-high'}"
+            : 'text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-white'}"
         onclick={() => activePage = item.id}
       >
         <span

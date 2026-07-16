@@ -77,7 +77,7 @@
     <Sidebar bind:activePage />
 
     <main class="flex-1 ml-64 min-h-screen flex flex-col">
-      <TopNav coins={activeStates} bind:activeCoinIndex />
+      <TopNav coins={activeStates} bind:activeCoinIndex bind:activePage />
 
       <div class="mt-16 p-6 space-y-4 flex-1">
         {#if loading}

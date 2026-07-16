@@ -146,7 +146,7 @@
 <!-- STITCH LAYOUT: 12-col Bento Grid -->
 <div class="grid grid-cols-12 gap-4">
   <!-- Summary Card (4 cols) -->
-  <div class="col-span-12 lg:col-span-4 glass rounded-xl p-5 flex flex-col justify-between overflow-hidden relative group">
+  <div class="col-span-12 lg:col-span-4 glass rounded-xl p-5 flex flex-col justify-between overflow-hidden relative group bg-gradient-holographic animate-glow-pulse">
     
     {#if coin?.cooldown_remaining_minutes > 0}
       <div class="absolute inset-0 bg-background/50 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center pointer-events-none">
@@ -162,7 +162,7 @@
         <p class="text-label-mono text-on-surface-variant uppercase tracking-wider">Total Aset Portfolio</p>
         <span class="material-symbols-outlined text-primary text-xl">account_balance_wallet</span>
       </div>
-      <h2 class="text-[32px] font-black text-on-surface font-sans">
+      <h2 class="text-[32px] font-black text-on-surface font-sans text-gradient-primary">
         Rp {totalAsset.toLocaleString('id-ID')}
       </h2>
       
@@ -249,9 +249,9 @@
       </div>
     </div>
     <div class="mt-6 flex justify-between items-center relative z-10">
-      <div class="text-center px-4 py-2 bg-white/5 rounded-lg border border-white/5">
+      <div class="text-center px-4 py-2 bg-white/5 rounded-lg border {coin.signal === 'BUY' ? 'border-primary/50 shadow-[0_0_10px_rgba(78,222,163,0.3)]' : coin.signal === 'SELL' ? 'border-secondary/50 shadow-[0_0_10px_rgba(255,179,173,0.3)]' : 'border-white/5'} transition-all">
         <p class="text-[10px] text-on-surface-variant font-bold uppercase">Sinyal</p>
-        <p class="text-data-numeric text-lg {coin.signal === 'BUY' ? 'text-primary' : coin.signal === 'SELL' ? 'text-secondary' : 'text-on-surface'}">{coin.signal || 'HOLD'}</p>
+        <p class="text-data-numeric text-lg {coin.signal === 'BUY' ? 'text-primary drop-shadow-[0_0_5px_rgba(78,222,163,0.8)]' : coin.signal === 'SELL' ? 'text-secondary drop-shadow-[0_0_5px_rgba(255,179,173,0.8)]' : 'text-on-surface'}">{coin.signal || 'HOLD'}</p>
       </div>
       <div class="text-center px-4 py-2 bg-white/5 rounded-lg border border-white/5">
         <p class="text-[10px] text-on-surface-variant font-bold uppercase">Mode</p>
@@ -285,8 +285,14 @@
         Analisis MIXA AI
       </h3>
     </div>
-    <div class="glass rounded-xl p-5 border-t-2 border-primary">
-      <p class="text-body-md leading-relaxed">{coin.mixa_insight || 'Menunggu inisialisasi MIXA AI...'}</p>
+    <div class="glass rounded-xl p-5 border-t-2 border-primary relative overflow-hidden">
+      <!-- Decorate background with subtle matrix/terminal vibe -->
+      <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiIvPjwvc3ZnPg==')] opacity-50"></div>
+      <p class="text-body-md leading-relaxed font-mono relative z-10 text-primary/90">
+        {#key coin.mixa_insight}
+          <span class="inline-block animate-typing border-r-2 border-primary pr-1">{coin.mixa_insight || 'Menunggu inisialisasi MIXA AI...'}</span>
+        {/key}
+      </p>
     </div>
   </div>
 

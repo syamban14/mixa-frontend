@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from 'svelte';
   
-  let { coins = [], activeCoinIndex = $bindable(0) } = $props();
+  let { coins = [], activeCoinIndex = $bindable(0), activePage = $bindable() } = $props();
   
   let showDropdown = $state(false);
   let visibleCoins = $derived(coins.slice(0, 5));
@@ -54,10 +54,10 @@
 
 <header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-40 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-sm flex justify-between items-center px-6">
   <div class="flex items-center gap-4">
-    <div class="relative w-64">
-      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+    <div class="relative w-64 group">
+      <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm transition-colors group-focus-within:text-primary">search</span>
       <input
-        class="w-full bg-surface-container-lowest border border-white/10 rounded-full py-1.5 pl-10 pr-4 text-xs text-label-mono focus:border-primary/50 focus:ring-0 transition-all outline-none text-on-surface"
+        class="w-full bg-surface-container-lowest border border-white/10 rounded-full py-1.5 pl-10 pr-4 text-xs text-label-mono focus:border-primary/50 focus:ring-0 transition-all outline-none text-on-surface focus:w-72 focus:shadow-[0_0_15px_rgba(78,222,163,0.2)]"
         placeholder="Search Markets..."
         type="text"
       />
@@ -86,7 +86,7 @@
           </button>
           
           {#if showDropdown}
-            <div class="absolute top-full mt-2 left-0 w-32 bg-surface border border-white/10 rounded-xl shadow-2xl py-2 z-50">
+            <div class="absolute top-full mt-2 left-0 w-32 bg-surface/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl py-2 z-50 animate-slide-up">
               {#each hiddenCoins as coin, i}
                 <button
                   class="w-full text-left px-4 py-2 text-label-mono text-xs font-bold transition-all
@@ -120,13 +120,13 @@
     <div class="flex items-center gap-4">
     <div class="relative">
       <button 
-        class="relative w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant hover:text-white transition-colors"
+        class="relative w-8 h-8 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant hover:text-white transition-colors {unreadCount > 0 ? 'animate-float' : ''}"
         onclick={() => {
           showNotifDropdown = !showNotifDropdown;
           if (showNotifDropdown && unreadCount > 0) markAsRead();
         }}
       >
-        <span class="material-symbols-outlined text-[20px]">notifications</span>
+        <span class="material-symbols-outlined text-[20px] {unreadCount > 0 ? 'text-primary' : ''}">notifications</span>
         {#if unreadCount > 0}
           <span class="absolute -top-1 -right-1 w-4 h-4 bg-error text-white text-[10px] font-bold rounded-full flex items-center justify-center">
             {unreadCount > 9 ? '9+' : unreadCount}
@@ -135,7 +135,7 @@
       </button>
       
       {#if showNotifDropdown}
-        <div class="absolute top-full mt-2 right-0 w-80 bg-surface border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50">
+        <div class="absolute top-full mt-2 right-0 w-80 bg-surface/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 animate-slide-up">
           <div class="px-4 py-3 border-b border-white/10 bg-surface-container-lowest">
             <h3 class="text-sm font-bold text-on-surface">Notifikasi Autopilot</h3>
           </div>
@@ -178,11 +178,20 @@
       </button>
       
       <!-- Logout Tooltip -->
-      <div class="absolute right-0 top-full mt-2 w-48 bg-surface border border-white/10 rounded-xl shadow-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+      <div class="absolute right-0 top-full mt-2 w-48 bg-surface/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all animate-slide-up z-50">
         <div class="px-4 py-2 border-b border-white/10 mb-1">
           <p class="text-xs text-on-surface font-bold truncate">{user?.name || 'Admin'}</p>
           <p class="text-[10px] text-on-surface-variant truncate">{user?.email || 'admin@mixa.ai'}</p>
         </div>
+        
+        <button 
+          onclick={() => activePage = 'config'}
+          class="w-full text-left px-4 py-2 text-on-surface text-xs font-bold hover:bg-white/5 transition-colors flex items-center gap-2"
+        >
+          <span class="material-symbols-outlined text-[16px]">settings</span>
+          Pengaturan
+        </button>
+        
         <button 
           onclick={() => {
             localStorage.removeItem('mixa_token');

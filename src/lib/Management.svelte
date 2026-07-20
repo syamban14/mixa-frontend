@@ -2,7 +2,7 @@
   let { coins = [] } = $props();
 
   const botIcons = ['trending_up', 'grid_view', 'bolt', 'account_balance_wallet'];
-  const availableStrategies = ['MA Crossover', 'Grid Trading', 'RSI Breakout', 'Scalping', 'Bollinger Bands'];
+  const availableStrategies = ['Gemini AI', 'MA Crossover', 'Grid Trading', 'RSI Breakout', 'Scalping', 'Bollinger Bands'];
   
   const coinDict = {
     'BTC': 'Bitcoin',

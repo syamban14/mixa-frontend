@@ -131,7 +131,7 @@
             </div>
           {/if}
           
-          <button onclick={() => showAdminLogin = true} class="text-xs text-on-surface-variant/50 hover:text-primary transition-colors mt-4 bg-transparent border-none cursor-pointer">
+          <button onclick={() => showAdminLogin = true} class="text-xs text-on-surface-variant hover:text-primary transition-colors mt-4 bg-transparent border-none cursor-pointer">
             Gunakan Master Password (Admin)
           </button>
         </div>

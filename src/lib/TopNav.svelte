@@ -112,8 +112,8 @@
     {#if coins.length > 0}
       <div class="flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded-full border border-white/5">
         <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-        <span class="text-label-mono text-on-surface">
-          Rp {coins[activeCoinIndex]?.current_price?.toLocaleString('id-ID') || '...'}
+        <span class="text-label-mono text-on-surface text-xs font-semibold">
+          <span class="text-on-surface-variant font-normal">{coins[activeCoinIndex]?.symbol || ''}</span> Rp {coins[activeCoinIndex]?.current_price?.toLocaleString('id-ID') || '...'}
         </span>
       </div>
     {/if}

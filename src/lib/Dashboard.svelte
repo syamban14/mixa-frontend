@@ -285,12 +285,12 @@
         Analisis MIXA AI
       </h3>
     </div>
-    <div class="glass rounded-xl p-5 border-t-2 border-primary relative overflow-hidden">
+    <div class="glass rounded-xl p-5 border-t-2 {coin.mixa_insight && (coin.mixa_insight.toLowerCase().includes('gagal') || coin.mixa_insight.toLowerCase().includes('error')) ? 'border-error' : 'border-primary'} relative overflow-hidden">
       <!-- Decorate background with subtle matrix/terminal vibe -->
       <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiIvPjwvc3ZnPg==')] opacity-50"></div>
-      <p class="text-body-md leading-relaxed font-mono relative z-10 text-primary/90">
+      <p class="text-body-md leading-relaxed font-mono relative z-10 {coin.mixa_insight && (coin.mixa_insight.toLowerCase().includes('gagal') || coin.mixa_insight.toLowerCase().includes('error')) ? 'text-error' : 'text-primary/90'}">
         {#key coin.mixa_insight}
-          <span class="inline-block animate-typing border-r-2 border-primary pr-1">{coin.mixa_insight || 'Menunggu inisialisasi MIXA AI...'}</span>
+          <span class="inline-block animate-typing border-r-2 {coin.mixa_insight && (coin.mixa_insight.toLowerCase().includes('gagal') || coin.mixa_insight.toLowerCase().includes('error')) ? 'border-error' : 'border-primary'} pr-1">{coin.mixa_insight || 'Menunggu inisialisasi MIXA AI...'}</span>
         {/key}
       </p>
     </div>
